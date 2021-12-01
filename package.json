@@ -1,34 +1,30 @@
 {
-  "name": "supaheroes",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "theme": "npx gulp less"
-  },
-  "dependencies": {
-    "@ant-design/icons": "^4.2.2",
-    "antd": "^4.17.1",
-    "classnames": "^2.2.5",
-    "next": "12.0.4",
-    "react": "17.0.2",
-    "react-css-theme-switcher": "^0.2.2",
-    "react-dom": "17.0.2"
-  },
-  "devDependencies": {
-    "@types/node": "16.11.9",
-    "@types/react": "17.0.36",
-    "autoprefixer": "^10.2.4",
-    "eslint": "7.32.0",
-    "eslint-config-next": "12.0.4",
-    "gulp": "^4.0.2",
-    "gulp-csso": "^4.0.1",
-    "gulp-debug": "^4.0.0",
-    "gulp-less": "^4.0.1",
-    "gulp-postcss": "^9.0.0",
-    "less-plugin-npm-import": "^2.1.0",
-    "typescript": "4.5.2"
-  }
+	"name": "supaheroes-interface",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "svelte-kit dev",
+		"build": "svelte-kit build",
+		"preview": "svelte-kit preview",
+		"check": "svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-static": "^1.0.0-next.20",
+		"@sveltejs/kit": "next",
+		"autoprefixer": "^10.3.4",
+		"cssnano": "^5.0.8",
+		"postcss": "^8.3.6",
+		"postcss-load-config": "^3.1.0",
+		"svelte": "^3.34.0",
+		"svelte-check": "^2.0.0",
+		"svelte-preprocess": "^4.9.4",
+		"svelte-time": "^0.5.0",
+		"tailwindcss": "^2.2.15",
+		"tslib": "^2.0.0",
+		"typescript": "^4.4.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"axios": "^0.22.0"
+	}
 }
