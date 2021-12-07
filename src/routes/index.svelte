@@ -23,10 +23,10 @@ import Subsection from "./subsection.svelte";
         <h1
           class="mb-8 font-commorant text-2xl font-bold text-left text-gray-50  lg:text-4xl"
         >
-          CROWDFUNDING OPPORTUNITY FOR EVERYONE
+          Crowdfunding Opportunity for Everyone
         </h1>
         <p class="mb-8 text-base leading-relaxed text-left  ">
-          Leverage the power and security of Blockchain technology to provide a
+          Leverage the power and security of blockchain technology to provide a
           safe and innovative crowdfunding system without the need of
           third-party intermediaries.
         </p>

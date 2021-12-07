@@ -101,7 +101,7 @@
         class=" lg:px-6 col-span-2 align-bottom flex focus:outline-none"
       >
         <h2
-          class="text-2xl font-bold mx-auto pt-6 text-transparent bg-clip-text bg-gradient-to-r from-supagreen-dark to-supagreen transition duration-500 ease-in-out transform cursor-pointer hover:text-green-500 lg:text-x lg:mr-8"
+          class="text-2xl font-commorant font-bold mx-auto pt-6 text-transparent bg-clip-text bg-gradient-to-r from-supagreen-dark to-supagreen transition duration-500 ease-in-out transform cursor-pointer hover:text-green-500 lg:text-x lg:mr-8"
         >
           Supaheroes
         </h2>
