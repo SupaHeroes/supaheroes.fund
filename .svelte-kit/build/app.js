@@ -4,7 +4,7 @@ import { set_paths, assets } from './runtime/paths.js';
 import { set_prerendering } from './runtime/env.js';
 import * as user_hooks from "./hooks.js";
 
-const template = ({ head, body }) => "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <link rel=\"icon\" href=\"/favicon.png\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Supaheroes</title>\n    <link rel=\"manifest\" crossorigin=\"use-credentials\" href=\"/manifest.json\"/>\n    " + head + "\n  </head>\n  <body class=\"font-noto hidescroll\">\n    <div id=\"svelte\">" + body + "</div>\n  </body>\n</html>\n\n<style>\n  .hidescroll::-webkit-scrollbar {\n    display: none;\n}\n  input:focus {outline:0.5; outline-color: #DEFFEE;}\n  button:focus {outline:0.5; outline-color: #DEFFEE;}\n</style>\n";
+const template = ({ head, body }) => "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n  <head>\r\n    <meta charset=\"utf-8\" />\r\n    <link rel=\"icon\" href=\"/favicon.png\" />\r\n    <link rel=\"stylesheet\" href=\"https://unpkg.com/aos@next/dist/aos.css\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\r\n    <title>Supaheroes</title>\r\n    <link rel=\"manifest\" crossorigin=\"use-credentials\" href=\"/manifest.json\"/>\r\n    " + head + "\r\n  </head>\r\n  <body class=\"hidescroll\">\r\n    <div id=\"svelte\">" + body + "</div>\r\n  </body>\r\n</html>\r\n\r\n<style>\r\n  .hidescroll::-webkit-scrollbar {\r\n    display: none;\r\n}\r\n  input:focus {outline:0.5; outline-color: #DEFFEE;}\r\n  button:focus {outline:0.5; outline-color: #DEFFEE;}\r\n</style>\r\n";
 
 let options = null;
 
@@ -22,9 +22,9 @@ export function init(settings = default_settings) {
 		amp: false,
 		dev: false,
 		entry: {
-			file: assets + "/_app/start-f4f3e66f.js",
+			file: assets + "/_app/start-6c641c21.js",
 			css: [assets + "/_app/assets/start-464e9d0a.css"],
-			js: [assets + "/_app/start-f4f3e66f.js",assets + "/_app/chunks/vendor-5e46aa75.js",assets + "/_app/chunks/singletons-12a22614.js"]
+			js: [assets + "/_app/start-6c641c21.js",assets + "/_app/chunks/vendor-ab5eaa6b.js",assets + "/_app/chunks/singletons-12a22614.js"]
 		},
 		fetched: undefined,
 		floc: false,
@@ -56,7 +56,7 @@ const d = decodeURIComponent;
 const empty = () => ({});
 
 const manifest = {
-	assets: [{"file":"favicon.png","size":72072,"type":"image/png"},{"file":"manifest.json","size":553,"type":"application/json"}],
+	assets: [{"file":"favicon.png","size":72072,"type":"image/png"},{"file":"manifest.json","size":571,"type":"application/json"}],
 	layout: "src/routes/__layout.svelte",
 	error: ".svelte-kit/build/components/error.svelte",
 	routes: [
@@ -94,6 +94,20 @@ const manifest = {
 						params: empty,
 						a: ["src/routes/__layout.svelte", "src/routes/section2.svelte"],
 						b: [".svelte-kit/build/components/error.svelte"]
+					},
+		{
+						type: 'page',
+						pattern: /^\/section3\/?$/,
+						params: empty,
+						a: ["src/routes/__layout.svelte", "src/routes/section3.svelte"],
+						b: [".svelte-kit/build/components/error.svelte"]
+					},
+		{
+						type: 'page',
+						pattern: /^\/section4\/?$/,
+						params: empty,
+						a: ["src/routes/__layout.svelte", "src/routes/section4.svelte"],
+						b: [".svelte-kit/build/components/error.svelte"]
 					}
 	]
 };
@@ -108,10 +122,10 @@ const get_hooks = hooks => ({
 });
 
 const module_lookup = {
-	"src/routes/__layout.svelte": () => import("../../src/routes/__layout.svelte"),".svelte-kit/build/components/error.svelte": () => import("./components/error.svelte"),"src/routes/index.svelte": () => import("../../src/routes/index.svelte"),"src/routes/subsection.svelte": () => import("../../src/routes/subsection.svelte"),"src/routes/protocol/index.svelte": () => import("../../src/routes/protocol/index.svelte"),"src/routes/section1.svelte": () => import("../../src/routes/section1.svelte"),"src/routes/section2.svelte": () => import("../../src/routes/section2.svelte")
+	"src/routes/__layout.svelte": () => import("..\\..\\src\\routes\\__layout.svelte"),".svelte-kit/build/components/error.svelte": () => import("./components\\error.svelte"),"src/routes/index.svelte": () => import("..\\..\\src\\routes\\index.svelte"),"src/routes/subsection.svelte": () => import("..\\..\\src\\routes\\subsection.svelte"),"src/routes/protocol/index.svelte": () => import("..\\..\\src\\routes\\protocol\\index.svelte"),"src/routes/section1.svelte": () => import("..\\..\\src\\routes\\section1.svelte"),"src/routes/section2.svelte": () => import("..\\..\\src\\routes\\section2.svelte"),"src/routes/section3.svelte": () => import("..\\..\\src\\routes\\section3.svelte"),"src/routes/section4.svelte": () => import("..\\..\\src\\routes\\section4.svelte")
 };
 
-const metadata_lookup = {"src/routes/__layout.svelte":{"entry":"pages/__layout.svelte-7eab79bf.js","css":["assets/pages/__layout.svelte-5e36db80.css"],"js":["pages/__layout.svelte-7eab79bf.js","chunks/vendor-5e46aa75.js","chunks/sbutton-b1ed063a.js"],"styles":[]},".svelte-kit/build/components/error.svelte":{"entry":"error.svelte-12bf3fc6.js","css":[],"js":["error.svelte-12bf3fc6.js","chunks/vendor-5e46aa75.js"],"styles":[]},"src/routes/index.svelte":{"entry":"pages/index.svelte-878e67e1.js","css":[],"js":["pages/index.svelte-878e67e1.js","chunks/vendor-5e46aa75.js","chunks/singletons-12a22614.js","chunks/sbutton-b1ed063a.js","pages/section1.svelte-57e8d2c1.js","pages/section2.svelte-83727071.js","pages/subsection.svelte-386e495a.js"],"styles":[]},"src/routes/subsection.svelte":{"entry":"pages/subsection.svelte-386e495a.js","css":[],"js":["pages/subsection.svelte-386e495a.js","chunks/vendor-5e46aa75.js"],"styles":[]},"src/routes/protocol/index.svelte":{"entry":"pages/protocol/index.svelte-f8d0bd56.js","css":[],"js":["pages/protocol/index.svelte-f8d0bd56.js","chunks/vendor-5e46aa75.js","chunks/sbutton-b1ed063a.js"],"styles":[]},"src/routes/section1.svelte":{"entry":"pages/section1.svelte-57e8d2c1.js","css":[],"js":["pages/section1.svelte-57e8d2c1.js","chunks/vendor-5e46aa75.js","chunks/sbutton-b1ed063a.js"],"styles":[]},"src/routes/section2.svelte":{"entry":"pages/section2.svelte-83727071.js","css":[],"js":["pages/section2.svelte-83727071.js","chunks/vendor-5e46aa75.js"],"styles":[]}};
+const metadata_lookup = {"src/routes/__layout.svelte":{"entry":"pages/__layout.svelte-a72082c6.js","css":["assets/pages/__layout.svelte-beabfd9c.css"],"js":["pages/__layout.svelte-a72082c6.js","chunks/vendor-ab5eaa6b.js","chunks/sbutton-ac14b91c.js","chunks/navigation-51f4a605.js","chunks/singletons-12a22614.js"],"styles":[]},".svelte-kit/build/components/error.svelte":{"entry":"error.svelte-e35a1b0e.js","css":[],"js":["error.svelte-e35a1b0e.js","chunks/vendor-ab5eaa6b.js"],"styles":[]},"src/routes/index.svelte":{"entry":"pages/index.svelte-8aef9181.js","css":[],"js":["pages/index.svelte-8aef9181.js","chunks/vendor-ab5eaa6b.js","chunks/navigation-51f4a605.js","chunks/singletons-12a22614.js","chunks/sbutton-ac14b91c.js","pages/section1.svelte-10e62eb9.js","pages/section2.svelte-8c673cd6.js","pages/section3.svelte-dba07236.js","pages/section4.svelte-0b605892.js","pages/subsection.svelte-23e40dfa.js"],"styles":[]},"src/routes/subsection.svelte":{"entry":"pages/subsection.svelte-23e40dfa.js","css":[],"js":["pages/subsection.svelte-23e40dfa.js","chunks/vendor-ab5eaa6b.js"],"styles":[]},"src/routes/protocol/index.svelte":{"entry":"pages/protocol/index.svelte-6c73f9da.js","css":[],"js":["pages/protocol/index.svelte-6c73f9da.js","chunks/vendor-ab5eaa6b.js","chunks/sbutton-ac14b91c.js"],"styles":[]},"src/routes/section1.svelte":{"entry":"pages/section1.svelte-10e62eb9.js","css":[],"js":["pages/section1.svelte-10e62eb9.js","chunks/vendor-ab5eaa6b.js","chunks/navigation-51f4a605.js","chunks/singletons-12a22614.js","chunks/sbutton-ac14b91c.js"],"styles":[]},"src/routes/section2.svelte":{"entry":"pages/section2.svelte-8c673cd6.js","css":[],"js":["pages/section2.svelte-8c673cd6.js","chunks/vendor-ab5eaa6b.js"],"styles":[]},"src/routes/section3.svelte":{"entry":"pages/section3.svelte-dba07236.js","css":[],"js":["pages/section3.svelte-dba07236.js","chunks/vendor-ab5eaa6b.js"],"styles":[]},"src/routes/section4.svelte":{"entry":"pages/section4.svelte-0b605892.js","css":[],"js":["pages/section4.svelte-0b605892.js","chunks/vendor-ab5eaa6b.js"],"styles":[]}};
 
 async function load_component(file) {
 	const { entry, css, js, styles } = metadata_lookup[file];

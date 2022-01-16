@@ -2,10 +2,13 @@
   import Sbutton from "@comp/sbutton.svelte";
   import "../app.postcss";
   import { onMount } from "svelte";
+  import AOS from "aos";
+import { goto } from "$app/navigation";
 
   let isExpanded = false;
 
   onMount(() => {
+    AOS.init();
     window.onbeforeunload = function () {
       window.scrollTo(0, 0);
     };
@@ -17,7 +20,7 @@
 </script>
 
 <!-- Navbar -->
-<div class="items-center bg-supadark text-white antialiased ">
+<div class="sticky top-0 z-50 items-center font-inter bg-supadark text-white antialiased ">
   <div
     class="items-center pt-4 justify-between w-full px-5 overflow-y-auto whitespace-nowrap scroll-hidden pb-4 border-b border-supadark-light"
   >
@@ -95,49 +98,49 @@
       {/if}
     </div>
     <!-- Desktop nav -->
-    <div class=" w-full  md:grid grid-cols-12 hidden">
+    <div class="sticky top-0 z-50 w-full  md:grid grid-cols-12 hidden">
       <div
         href="/"
         class=" lg:px-6 col-span-2 align-bottom flex focus:outline-none"
       >
         <h2
-          class="text-2xl font-commorant font-bold mx-auto pt-6 text-transparent bg-clip-text bg-gradient-to-r from-supagreen-dark to-supagreen transition duration-500 ease-in-out transform cursor-pointer hover:text-green-500 lg:text-x lg:mr-8"
+          class="text-2xl font-athelas uppercase font-extrabold mx-auto pt-8 text-transparent bg-clip-text bg-gradient-to-r from-supagreen-dark to-supagreen transition duration-500 ease-in-out transform cursor-pointer hover:text-green-500 lg:text-x lg:mr-8"
         >
           Supaheroes
         </h2>
       </div>
       <nav class="flex col-span-8 ">
-        <ul class="items-center mx-auto  list-none inline-flex">
+        <ul class="items-center mx-auto font-medium tracking-wide list-none inline-flex">
           <li>
             <a
-              href="/discover"
-              class="px-4 py-1 mr-1 text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen "
+              href="https://docs-supaheroes.netlify.app/"
+              class="px-4 py-1 mr-1  transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen "
               >Learn</a
             >
           </li>
 
           <li>
             <a
-              href="/market"
-              class="px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen "
+              href="/Governance"
+              class="px-4 py-1 mr-1 text-base  transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen "
               >Governance</a
             >
           </li>
           <li>
             <a
               href="/protocol"
-              class="px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen "
+              class="px-4 py-1 mr-1 text-base  transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen "
               >Community</a
             >
           </li>
         </ul>
       </nav>
-      <div class="col-span-2 w-48 p-4 flex"><Sbutton>Launch App</Sbutton></div>
+      <div class="col-span-2 w-48 p-4 flex"><Sbutton on:click={async () => await goto("https://app-supaheroes.netlify.app/")}>Launch App</Sbutton></div>
     </div>
   </div>
 </div>
 
-<div class="min-h-screen bg-supadark">
+<div class="min-h-screen relative bg-supadark">
   <slot />
 </div>
 

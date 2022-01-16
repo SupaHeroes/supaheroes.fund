@@ -1,11 +1,13 @@
 const c = [
-	() => import("../../../src/routes/__layout.svelte"),
-	() => import("../components/error.svelte"),
-	() => import("../../../src/routes/index.svelte"),
-	() => import("../../../src/routes/subsection.svelte"),
-	() => import("../../../src/routes/protocol/index.svelte"),
-	() => import("../../../src/routes/section1.svelte"),
-	() => import("../../../src/routes/section2.svelte")
+	() => import("..\\..\\..\\src\\routes\\__layout.svelte"),
+	() => import("..\\components\\error.svelte"),
+	() => import("..\\..\\..\\src\\routes\\index.svelte"),
+	() => import("..\\..\\..\\src\\routes\\subsection.svelte"),
+	() => import("..\\..\\..\\src\\routes\\protocol\\index.svelte"),
+	() => import("..\\..\\..\\src\\routes\\section1.svelte"),
+	() => import("..\\..\\..\\src\\routes\\section2.svelte"),
+	() => import("..\\..\\..\\src\\routes\\section3.svelte"),
+	() => import("..\\..\\..\\src\\routes\\section4.svelte")
 ];
 
 const d = decodeURIComponent;
@@ -24,7 +26,13 @@ export const routes = [
 	[/^\/section1\/?$/, [c[0], c[5]], [c[1]]],
 
 	// src/routes/section2.svelte
-	[/^\/section2\/?$/, [c[0], c[6]], [c[1]]]
+	[/^\/section2\/?$/, [c[0], c[6]], [c[1]]],
+
+	// src/routes/section3.svelte
+	[/^\/section3\/?$/, [c[0], c[7]], [c[1]]],
+
+	// src/routes/section4.svelte
+	[/^\/section4\/?$/, [c[0], c[8]], [c[1]]]
 ];
 
 // we import the root layout/error components eagerly, so that

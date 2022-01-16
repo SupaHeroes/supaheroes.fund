@@ -1,10 +1,13 @@
 <script>
+import { goto } from "$app/navigation";
+
   import Sbutton from "@comp/sbutton.svelte";
 </script>
 <section class="section min-h-screen flex">
   <div class="w-1/2 mx-auto my-auto">
     
       <img
+      data-aos="fade-up"
         class="mt-10 mx-auto"
         width="800"
         height="800"
@@ -16,15 +19,15 @@
   <div class="h-screen w-1 bg-supagreen-dark"></div>
   <div class="w-1/2 mx-auto my-auto">
     <div class=" text-gray-300">
-      <p class="text-gray-50 text-center font-bold font-commorant text-4xl">
-        New Crowdfunding Systems
+      <p data-aos="fade-up" class="text-gray-50 max-w-lg mx-auto font-bold font-commorant text-4xl">
+        Building on What Works
       </p>
-      <p class=" text-xl mt-2 text-center max-w-lg mx-auto">
-        Built on top of foundational knowledge of the past for businesses and projects of today
+      <p data-aos="fade-up" class=" my-8 text-left font-inter max-w-lg mx-auto">
+        Built on top of the foundational knowledge of the past for businesses and projects of today. Connecting the latest DeFi innovations for crowdfunding mechanisms that are understood and loved by many.
       </p>
     </div>
-    <div class="max-w-md mx-auto mt-6">
-      <Sbutton><p class="text-white">Learn More</p></Sbutton>
+    <div data-aos="fade-up" class="max-w-lg mx-auto mt-6">
+      <Sbutton on:click={async () => await goto("https://docs-supaheroes.netlify.app/")}><p class="text-white">Learn How it Works</p></Sbutton>
     </div>
   </div>
 </section>

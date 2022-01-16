@@ -4,12 +4,13 @@
   import Sbutton from "@comp/sbutton.svelte";
   import Section1 from "./section1.svelte";
   import Section2 from "./section2.svelte";
-import Subsection from "./subsection.svelte";
-  
+import Section3 from "./section3.svelte";
+import Section4 from "./section4.svelte";
+  import Subsection from "./subsection.svelte";
 </script>
 
 <!-- Hero Section -->
-<div id="fullpage">
+<div>
   <section
     style="background: url('https://ik.imagekit.io/1irdz9lsyrw/plutusrender__3wykITPm.png?updatedAt=1638359431895');"
     class="section text-gray-300 min-h-screen "
@@ -25,26 +26,24 @@ import Subsection from "./subsection.svelte";
         >
           Crowdfunding Opportunity for Everyone
         </h1>
-        <p class="mb-8 text-base leading-relaxed text-left  ">
+        <p class="mb-8 text-base font-inter leading-relaxed text-left  ">
           Leverage the power and security of blockchain technology to provide a
           safe and innovative crowdfunding system without the need of
           third-party intermediaries.
         </p>
 
         <div class=" items-start">
-          <Sbutton on:click={async () => await goto("/discover")}
+          <Sbutton on:click={async () => await goto("https://app-supaheroes.netlify.app/")}
             >Become a Hero</Sbutton
           >
         </div>
       </div>
-      <div class="w-full lg:w-5/6 lg:max-w-xl md:w-1/2 static">
-        <div
-          class="bg-supagreen-dark blur-3xl absolute h-80 right-40 opacity-40 rounded-full bottom-0 w-44 hidden lg:block"
-        />
-      </div>
+      <div class="w-full lg:w-5/6 lg:max-w-xl md:w-1/2 static" />
     </div>
   </section>
 </div>
-<Subsection/>
+<Subsection />
 <Section1 />
 <Section2 />
+<Section3/>
+<Section4/>

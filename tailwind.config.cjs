@@ -4,7 +4,8 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
-        noto: ['Noto Serif Display'],
+        athelas: ['Athelas'],
+        inter: ['Inter'],
         commorant: ['Cormorant SC']
       },
       colors: {
