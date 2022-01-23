@@ -24,17 +24,16 @@ import Section4 from "./section4.svelte";
         <h1
           class="mb-8 font-commorant text-2xl font-bold text-left text-gray-50  lg:text-4xl"
         >
-          Crowdfunding Opportunity for Everyone
+          Funding for Society's Superheroes
         </h1>
-        <p class="mb-8 text-base font-inter leading-relaxed text-left  ">
-          Leverage the power and security of blockchain technology to provide a
-          safe and innovative crowdfunding system without the need of
-          third-party intermediaries.
+        <p class="mb-8 text-base font-inter leading-relaxed text-left">
+          We believe that not all superheroes wear capes, some wears medical outfits and some are at the ocean cleaning our mistakes. 
+          Whoever they are and wherever they are, participate and help those who make the world a better place.
         </p>
 
         <div class=" items-start">
           <Sbutton on:click={async () => await goto("https://app-supaheroes.netlify.app/")}
-            >Become a Hero</Sbutton
+            >Help a Superhero</Sbutton
           >
         </div>
       </div>
@@ -45,5 +44,5 @@ import Section4 from "./section4.svelte";
 <Subsection />
 <Section1 />
 <Section2 />
-<Section3/>
+<!-- <Section3/> -->
 <Section4/>

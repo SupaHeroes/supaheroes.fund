@@ -100,36 +100,36 @@ import { goto } from "$app/navigation";
     <!-- Desktop nav -->
     <div class="sticky top-0 z-50 w-full  md:grid grid-cols-12 hidden">
       <div
-        href="/"
         class=" lg:px-6 col-span-2 align-bottom flex focus:outline-none"
       >
-        <h2
-          class="text-2xl font-athelas uppercase font-extrabold mx-auto pt-8 text-transparent bg-clip-text bg-gradient-to-r from-supagreen-dark to-supagreen transition duration-500 ease-in-out transform cursor-pointer hover:text-green-500 lg:text-x lg:mr-8"
+      <img src="/SUPALOGOXBG.png" width="84" height="45" alt="logo">
+        <a href="/"
+          class="text-2xl pl-2 font-athelas uppercase font-extrabold mx-auto pt-8 text-transparent bg-clip-text bg-gradient-to-r from-supagreen-dark to-supagreen transition duration-500 ease-in-out transform cursor-pointer hover:text-green-500 lg:text-x lg:mr-8"
         >
           Supaheroes
-        </h2>
+    </a>
       </div>
       <nav class="flex col-span-8 ">
         <ul class="items-center mx-auto font-medium tracking-wide list-none inline-flex">
           <li>
             <a
               href="https://docs-supaheroes.netlify.app/"
-              class="px-4 py-1 mr-1  transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen "
+              class="px-4 py-1 mr-1  transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen-dark "
               >Learn</a
             >
           </li>
 
           <li>
             <a
-              href="/Governance"
-              class="px-4 py-1 mr-1 text-base  transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen "
+              href="/governance"
+              class="px-4 py-1 mr-1 text-base transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen-dark "
               >Governance</a
             >
           </li>
           <li>
             <a
-              href="/protocol"
-              class="px-4 py-1 mr-1 text-base  transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen "
+              href="https://twitter.com/SupaheroesFund"
+              class="px-4 py-1 mr-1 text-base  transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen-dark "
               >Community</a
             >
           </li>
@@ -153,7 +153,7 @@ import { goto } from "$app/navigation";
       <nav
         class="flex flex-wrap items-center justify-center w-full mx-auto mb-6 text-base nprd"
       >
-        <a
+        <!-- <a
           href="/"
           class="px-4 py-1 mr-1 text-xs transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-black "
           >Hackathons</a
@@ -172,26 +172,13 @@ import { goto } from "$app/navigation";
           href="/"
           class="px-4 py-1 mr-1 text-xs transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-black "
           >FAQ</a
-        >
+        > -->
       </nav>
       <span
         class="inline-flex justify-center w-full mx-auto mt-2 mr-2 sm:ml-auto sm:mt-0"
       >
-        <a class="text-supagreen hover:text-black" href="/">
-          <svg
-            fill="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            class="w-5 h-5"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"
-            />
-          </svg>
-        </a>
-        <a class="ml-3 text-supagreen-dark hover:text-black" href="/">
+
+        <a class="ml-3 text-supagreen-dark hover:text-black" href="https://twitter.com/SupaheroesFund">
           <svg
             fill="currentColor"
             stroke-linecap="round"
@@ -205,40 +192,10 @@ import { goto } from "$app/navigation";
             />
           </svg>
         </a>
-        <a class="ml-3 text-supagreen hover:text-black" href="/">
-          <svg
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            class="w-5 h-5"
-            viewBox="0 0 24 24"
-          >
-            <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-            <path
-              d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"
-            />
-          </svg>
-        </a>
-        <a class="ml-3 text-supagreen-dark hover:text-black" href="/">
-          <svg
-            fill="currentColor"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="0"
-            class="w-5 h-5"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="none"
-              d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"
-            />
-            <circle cx="4" cy="4" r="2" stroke="none" />
-          </svg>
-        </a>
+       
+        
       </span>
+      <h1 class="pt-4 text-sm">© Supaheroes Lab</h1>
     </div>
   </footer>
 </div>

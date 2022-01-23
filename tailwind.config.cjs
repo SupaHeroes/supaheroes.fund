@@ -16,8 +16,8 @@ const config = {
         },
         supagreen: {
           light: "#DEFFEE",
-          DEFAULT: "#67E9F1",
-          dark: "#24E795",
+          DEFAULT: "#269BA8",
+          dark: "#79D38A",
         },
       },
     },

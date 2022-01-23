@@ -1,6 +1,6 @@
 <section class="section min-h-screen">
 
-  <div class="flex max-w-6xl mx-auto flex-wrap overflow-hidden">
+  <div class="flex max-w-7xl mx-auto flex-wrap overflow-hidden">
 
     <div class="my-3 px-3 w-1/3 overflow-hidden pt-8">
       <div data-aos="fade-up" class="bg-supadark-light rounded-2xl mx-8 border-4 border-supagreen-dark">

@@ -5,7 +5,7 @@
     "providedBy": { "name": "Supabase", "url": "https://https://github.com/SupaHeroes" },
     "icons": [
       {
-        "src": "favicon.png",
+        "src": "SUPALOGOXBG.png",
         "type": "image/png",
         "sizes": "512x512"
       }
@@ -14,6 +14,6 @@
     "display": "standalone",
     "scope": "/",
     "theme_color": "#24E795",
-    "description": "Decentralized Crowdfunding Platform based on SupaProtocol",
+    "description": "Economics-based Decentralized Crowdfunding Ecosystem",
     "skylink": "AQC8Bm74YWU56X62fw08ujHn1bdbC3cNikpUSCSQzdbLrw"
 }
