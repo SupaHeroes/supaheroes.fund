@@ -1,30 +1,27 @@
-<section class="section min-h-screen">
+<section  class="section bg-green-900">
 
-  <div class="flex max-w-7xl mx-auto flex-wrap overflow-hidden">
+  <div style="background: url(/bg2.png);" class="mx-auto h-screen overflow-hidden w-full items-center justify-center flex flex-col">
 
-    <div class="my-3 px-3 w-1/3 overflow-hidden pt-8">
-      <div data-aos="fade-up" class="bg-supadark-light rounded-2xl mx-8 border-4 border-supagreen-dark">
-        <img class="m-auto" width="300px" height="300px" src="https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/premium/bulb-dynamic-premium.png" alt="Receipt">
+    <div class="w-3/4 flex flex-row mx-auto">
+      <div class="w-1/2">
+        <h1 class="text-8xl font-commorant text-white uppercase font-black">DeFi & NFT</h1>
       </div>
-      <p data-aos="fade-up" class=" text-gray-50 text-2xl font-inter font-bold mx-8 pt-8">Permissionless</p>
-      <p data-aos="fade-up" class=" text-gray-400 mx-8 pt-4">Launch ideas without permissions! Unleash your creativity and let the crowd to judge. No rules, no censorship, and no bias because we believe that the best innovations are still unknown.</p>
-    </div>
-  
-    <div class=" px-3 w-1/3 overflow-hidden">
-      <div data-aos="fade-up" class="bg-supadark-light  rounded-2xl mx-8 border-8 border-supagreen-dark">
-        <img class="m-auto" width="300px" height="300px" src="https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/premium/sheild-dynamic-premium.png" alt="Receipt">
+      <div class="w-1/2">
+        <p class="font-inter text-white uppercase font-bold tracking-widest">Maximum web3 Experience</p>
+        <p class="font-inter text-gray-300 pt-2">Experience crowdfunding with DeFi and NFT connected to your campaign. Let the latest financial innovations help you reach your crowdfunding goal while also providing the best crypto experience through NFT.</p>
       </div>
-      <p data-aos="fade-up" class=" text-gray-50 text-2xl font-inter font-bold mx-8 pt-8">Built-in Self-Dispute</p>
-      <p data-aos="fade-up" class="text-gray-400 mx-8 pt-4">Upon contributing, contributors are awarded receipt NFT that provide voting power over the campaign progression. NFT holders will be able to stop a campaign if found to be a fraud by the majority vote. Freely contribute to projects you like without worrying about rug pulls.</p>
     </div>
-  
-    <div class="my-3 px-3 w-1/3 overflow-hidden pt-8">
-      <div data-aos="fade-up" class="bg-supadark-light rounded-2xl mx-8 border-4 border-supagreen-dark">
-        <img class="m-auto" width="300px" height="300px" src="https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/premium/locker-dynamic-premium.png" alt="Receipt">
+    <div class="border-t w-3/4 my-24 border-gray-400"></div>
+    <div class="w-3/4 flex flex-row mx-auto">
+      <div class="w-1/2">
+        <p class="font-inter text-white uppercase font-bold tracking-widest">Open Participation and Governance</p>
+        <p class="font-inter text-gray-300 pt-2">Supaheroes mechanism allow permissionless participation from anyone in the world without KYC or country restrictions. The platform relies on proof of ownership and democratic consensus.</p>
       </div>
-      <p data-aos="fade-up" class=" text-gray-50 text-2xl font-inter font-bold mx-8 pt-8">DeFi Compatible</p>
-      <p data-aos="fade-up" class="text-gray-400 mx-8 pt-4">We accept the latest and market proven tokens to support your crowdfunding campaigns. Projects may receive up to 2x more funds than requested by accepting interest-earning tokens.</p>
+      <div class="w-1/2 text-right">
+        <h1 class="text-8xl font-commorant text-white uppercase font-black">Public</h1>
+      </div>      
     </div>
+    
   
   </div>
   </section>

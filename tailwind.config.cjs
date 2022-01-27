@@ -11,8 +11,8 @@ const config = {
       colors: {
         supadark: {
           light: "#303030",
-          DEFAULT: "#1F1F1F",
-          dark: "#1B1C1E",
+          DEFAULT: "#0D1016",
+          dark: "#0D1016",
         },
         supagreen: {
           light: "#DEFFEE",

@@ -1504,6 +1504,11 @@
     "svelte-preprocess" "^4.0.0"
     "typescript" "*"
 
+"svelte-fullpage@^0.3.1":
+  "integrity" "sha512-cpO5UdVufxUn/m3Ua8xInBa4r9WbGTIDNCuVDFtS5Aw3FwuvRDyvbf7le41c8bFkeKJlzlHSGKSxy9q6SgpA7w=="
+  "resolved" "https://registry.npmjs.org/svelte-fullpage/-/svelte-fullpage-0.3.1.tgz"
+  "version" "0.3.1"
+
 "svelte-hmr@^0.14.7":
   "integrity" "sha512-pDrzgcWSoMaK6AJkBWkmgIsecW0GChxYZSZieIYfCP0v2oPyx2CYU/zm7TBIcjLVUPP714WxmViE9Thht4etog=="
   "resolved" "https://registry.npmjs.org/svelte-hmr/-/svelte-hmr-0.14.7.tgz"
@@ -1528,7 +1533,7 @@
   dependencies:
     "dayjs" "^1.10.6"
 
-"svelte@^3.23.0", "svelte@^3.24.0", "svelte@^3.34.0", "svelte@^3.39.0", "svelte@>=3.19.0":
+"svelte@^3.0.0", "svelte@^3.23.0", "svelte@^3.24.0", "svelte@^3.34.0", "svelte@^3.39.0", "svelte@>=3.19.0":
   "integrity" "sha512-lAcryr9Do2PeGtbodspX5I4kWj4yWYAa2WGpDCwzNkP3y8WZTxigMd4/TMO1rBZEOkMYGn4ZXrbAlSEGhK6q3w=="
   "resolved" "https://registry.npmjs.org/svelte/-/svelte-3.42.6.tgz"
   "version" "3.42.6"
