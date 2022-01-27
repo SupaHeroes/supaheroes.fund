@@ -9,6 +9,7 @@
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"devDependencies": {
+		"@sveltejs/adapter-netlify": "^1.0.0-next.44",
 		"@sveltejs/adapter-static": "^1.0.0-next.20",
 		"@sveltejs/kit": "next",
 		"autoprefixer": "^10.3.4",

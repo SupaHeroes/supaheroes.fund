@@ -1,5 +1,6 @@
 import preprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-static';
+import netlify from '@sveltejs/adapter-netlify';
 import path from 'path';
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -13,12 +14,13 @@ const config = {
 
   kit: {
     // hydrate the <div id="svelte"> element in src/app.html
-    adapter: adapter({
-      // default options are shown
-      pages: 'build',
-      assets: 'build',
-      fallback: 'index.html',
-    }),
+    // adapter: adapter({
+    //   // default options are shown
+    //   pages: 'build',
+    //   assets: 'build',
+    //   fallback: 'index.html',
+    // }),
+    adapter: netlify(),
     target: '#svelte',
     vite: {
       resolve: {
