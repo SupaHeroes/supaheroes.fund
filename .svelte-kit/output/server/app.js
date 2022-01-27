@@ -20,7 +20,6 @@ var __privateSet = (obj, member, value, setter) => {
   return value;
 };
 var _map;
-import "aos";
 function get_single_valued_header(headers, key) {
   const value = headers[key];
   if (Array.isArray(value)) {
@@ -313,30 +312,30 @@ function stringifyString(str) {
   result += '"';
   return result;
 }
-function noop() {
+function noop$1() {
 }
-function safe_not_equal(a, b) {
+function safe_not_equal$1(a, b) {
   return a != a ? b == b : a !== b || (a && typeof a === "object" || typeof a === "function");
 }
 Promise.resolve();
-const subscriber_queue = [];
-function writable(value, start = noop) {
+const subscriber_queue$1 = [];
+function writable$1(value, start = noop$1) {
   let stop;
   const subscribers = new Set();
   function set(new_value) {
-    if (safe_not_equal(value, new_value)) {
+    if (safe_not_equal$1(value, new_value)) {
       value = new_value;
       if (stop) {
-        const run_queue = !subscriber_queue.length;
+        const run_queue = !subscriber_queue$1.length;
         for (const subscriber of subscribers) {
           subscriber[1]();
-          subscriber_queue.push(subscriber, value);
+          subscriber_queue$1.push(subscriber, value);
         }
         if (run_queue) {
-          for (let i = 0; i < subscriber_queue.length; i += 2) {
-            subscriber_queue[i][0](subscriber_queue[i + 1]);
+          for (let i = 0; i < subscriber_queue$1.length; i += 2) {
+            subscriber_queue$1[i][0](subscriber_queue$1[i + 1]);
           }
-          subscriber_queue.length = 0;
+          subscriber_queue$1.length = 0;
         }
       }
     }
@@ -344,11 +343,11 @@ function writable(value, start = noop) {
   function update(fn) {
     set(fn(value));
   }
-  function subscribe(run2, invalidate = noop) {
+  function subscribe2(run2, invalidate = noop$1) {
     const subscriber = [run2, invalidate];
     subscribers.add(subscriber);
     if (subscribers.size === 1) {
-      stop = start(set) || noop;
+      stop = start(set) || noop$1;
     }
     run2(value);
     return () => {
@@ -359,7 +358,7 @@ function writable(value, start = noop) {
       }
     };
   }
-  return { set, update, subscribe };
+  return { set, update, subscribe: subscribe2 };
 }
 function hash(value) {
   let hash2 = 5381;
@@ -407,11 +406,11 @@ async function render_response({
         is_private = true;
       maxage = loaded.maxage;
     });
-    const session = writable($session);
+    const session = writable$1($session);
     const props = {
       stores: {
-        page: writable(null),
-        navigating: writable(null),
+        page: writable$1(null),
+        navigating: writable$1(null),
         session
       },
       page,
@@ -1274,6 +1273,8 @@ async function respond(incoming, options2, state = {}) {
     };
   }
 }
+function noop() {
+}
 function run(fn) {
   return fn();
 }
@@ -1282,6 +1283,19 @@ function blank_object() {
 }
 function run_all(fns) {
   fns.forEach(run);
+}
+function safe_not_equal(a, b) {
+  return a != a ? b == b : a !== b || (a && typeof a === "object" || typeof a === "function");
+}
+function subscribe(store, ...callbacks) {
+  if (store == null) {
+    return noop;
+  }
+  const unsub = store.subscribe(...callbacks);
+  return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+}
+function null_to_empty(value) {
+  return value == null ? "" : value;
 }
 let current_component;
 function set_current_component(component) {
@@ -1295,6 +1309,9 @@ function get_current_component() {
 function setContext(key, context) {
   get_current_component().$$.context.set(key, context);
 }
+function getContext(key) {
+  return get_current_component().$$.context.get(key);
+}
 Promise.resolve();
 const escaped = {
   '"': "&quot;",
@@ -1305,6 +1322,13 @@ const escaped = {
 };
 function escape(html) {
   return String(html).replace(/["'&<>]/g, (match) => escaped[match]);
+}
+function each(items, fn) {
+  let str = "";
+  for (let i = 0; i < items.length; i += 1) {
+    str += fn(items[i], i);
+  }
+  return str;
 }
 const missing_component = {
   $$render: () => ""
@@ -1352,10 +1376,15 @@ function create_ssr_component(fn) {
     $$render
   };
 }
+function add_attribute(name, value, boolean) {
+  if (value == null || boolean && !value)
+    return "";
+  return ` ${name}${value === true ? "" : `=${typeof value === "string" ? JSON.stringify(escape(value)) : `"${value}"`}`}`;
+}
 function afterUpdate() {
 }
 var root_svelte_svelte_type_style_lang = "#svelte-announcer.svelte-1pdgbjn{clip:rect(0 0 0 0);-webkit-clip-path:inset(50%);clip-path:inset(50%);height:1px;left:0;overflow:hidden;position:absolute;top:0;white-space:nowrap;width:1px}";
-const css = {
+const css$5 = {
   code: "#svelte-announcer.svelte-1pdgbjn{clip:rect(0 0 0 0);-webkit-clip-path:inset(50%);clip-path:inset(50%);height:1px;left:0;overflow:hidden;position:absolute;top:0;white-space:nowrap;width:1px}",
   map: `{"version":3,"file":"root.svelte","sources":["root.svelte"],"sourcesContent":["<!-- This file is generated by @sveltejs/kit \u2014 do not edit it! -->\\n<script>\\n\\timport { setContext, afterUpdate, onMount } from 'svelte';\\n\\n\\t// stores\\n\\texport let stores;\\n\\texport let page;\\n\\n\\texport let components;\\n\\texport let props_0 = null;\\n\\texport let props_1 = null;\\n\\texport let props_2 = null;\\n\\n\\tsetContext('__svelte__', stores);\\n\\n\\t$: stores.page.set(page);\\n\\tafterUpdate(stores.page.notify);\\n\\n\\tlet mounted = false;\\n\\tlet navigated = false;\\n\\tlet title = null;\\n\\n\\tonMount(() => {\\n\\t\\tconst unsubscribe = stores.page.subscribe(() => {\\n\\t\\t\\tif (mounted) {\\n\\t\\t\\t\\tnavigated = true;\\n\\t\\t\\t\\ttitle = document.title || 'untitled page';\\n\\t\\t\\t}\\n\\t\\t});\\n\\n\\t\\tmounted = true;\\n\\t\\treturn unsubscribe;\\n\\t});\\n<\/script>\\n\\n<svelte:component this={components[0]} {...(props_0 || {})}>\\n\\t{#if components[1]}\\n\\t\\t<svelte:component this={components[1]} {...(props_1 || {})}>\\n\\t\\t\\t{#if components[2]}\\n\\t\\t\\t\\t<svelte:component this={components[2]} {...(props_2 || {})}/>\\n\\t\\t\\t{/if}\\n\\t\\t</svelte:component>\\n\\t{/if}\\n</svelte:component>\\n\\n{#if mounted}\\n\\t<div id=\\"svelte-announcer\\" aria-live=\\"assertive\\" aria-atomic=\\"true\\">\\n\\t\\t{#if navigated}\\n\\t\\t\\t{title}\\n\\t\\t{/if}\\n\\t</div>\\n{/if}\\n\\n<style>#svelte-announcer{clip:rect(0 0 0 0);-webkit-clip-path:inset(50%);clip-path:inset(50%);height:1px;left:0;overflow:hidden;position:absolute;top:0;white-space:nowrap;width:1px}</style>"],"names":[],"mappings":"AAqDO,gCAAiB,CAAC,KAAK,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,kBAAkB,MAAM,GAAG,CAAC,CAAC,UAAU,MAAM,GAAG,CAAC,CAAC,OAAO,GAAG,CAAC,KAAK,CAAC,CAAC,SAAS,MAAM,CAAC,SAAS,QAAQ,CAAC,IAAI,CAAC,CAAC,YAAY,MAAM,CAAC,MAAM,GAAG,CAAC"}`
 };
@@ -1380,7 +1409,7 @@ const Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     $$bindings.props_1(props_1);
   if ($$props.props_2 === void 0 && $$bindings.props_2 && props_2 !== void 0)
     $$bindings.props_2(props_2);
-  $$result.css.add(css);
+  $$result.css.add(css$5);
   {
     stores.page.set(page);
   }
@@ -1407,7 +1436,7 @@ var user_hooks = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   [Symbol.toStringTag]: "Module"
 });
-const template = ({ head, body }) => '<!DOCTYPE html>\r\n<html lang="en">\r\n  <head>\r\n    <meta charset="utf-8" />\r\n    <link rel="icon" href="/favicon.png" />\r\n    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />\r\n    <meta name="viewport" content="width=device-width, initial-scale=1" />\r\n    <title>Supaheroes</title>\r\n    <link rel="manifest" crossorigin="use-credentials" href="/manifest.json"/>\r\n    ' + head + '\r\n  </head>\r\n  <body class="hidescroll">\r\n    <div id="svelte">' + body + "</div>\r\n  </body>\r\n</html>\r\n\r\n<style>\r\n  .hidescroll::-webkit-scrollbar {\r\n    display: none;\r\n}\r\n  input:focus {outline:0.5; outline-color: #DEFFEE;}\r\n  button:focus {outline:0.5; outline-color: #DEFFEE;}\r\n</style>\r\n";
+const template = ({ head, body }) => '<!DOCTYPE html>\r\n<html lang="en">\r\n  <head>\r\n    <meta charset="utf-8" />\r\n    <link rel="icon" href="/logosupa.svg" />\r\n    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />\r\n    <meta name="viewport" content="width=device-width, initial-scale=1" />\r\n    <title>Supaheroes</title>\r\n    <link rel="manifest" crossorigin="use-credentials" href="/manifest.json"/>\r\n    ' + head + '\r\n  </head>\r\n  <body class="hidescroll bg-supadark">\r\n    <div id="svelte">' + body + "</div>\r\n  </body>\r\n</html>\r\n\r\n<style>\r\n  .hidescroll::-webkit-scrollbar {\r\n    display: none;\r\n}\r\n  input:focus {outline:0.5; outline-color: #DEFFEE;}\r\n  button:focus {outline:0.5; outline-color: #DEFFEE;}\r\n</style>\r\n";
 let options = null;
 const default_settings = { paths: { "base": "", "assets": "" } };
 function init(settings = default_settings) {
@@ -1418,9 +1447,9 @@ function init(settings = default_settings) {
     amp: false,
     dev: false,
     entry: {
-      file: assets + "/_app/start-6c641c21.js",
-      css: [assets + "/_app/assets/start-464e9d0a.css"],
-      js: [assets + "/_app/start-6c641c21.js", assets + "/_app/chunks/vendor-ab5eaa6b.js", assets + "/_app/chunks/singletons-12a22614.js"]
+      file: assets + "/_app/start-97cca617.js",
+      css: [assets + "/_app/assets/start-464e9d0a.css", assets + "/_app/assets/vendor-a36399ba.css"],
+      js: [assets + "/_app/start-97cca617.js", assets + "/_app/chunks/vendor-c5ec5885.js", assets + "/_app/chunks/singletons-12a22614.js"]
     },
     fetched: void 0,
     floc: false,
@@ -1449,7 +1478,7 @@ function init(settings = default_settings) {
 }
 const empty = () => ({});
 const manifest = {
-  assets: [{ "file": "favicon.png", "size": 72072, "type": "image/png" }, { "file": "manifest.json", "size": 571, "type": "application/json" }],
+  assets: [{ "file": "bg2.png", "size": 1558406, "type": "image/png" }, { "file": "city.png", "size": 314697, "type": "image/png" }, { "file": "economy.png", "size": 97687, "type": "image/png" }, { "file": "logosupa.svg", "size": 442680, "type": "image/svg+xml" }, { "file": "manifest.json", "size": 570, "type": "application/json" }, { "file": "plutusbg.png", "size": 1489100, "type": "image/png" }],
   layout: "src/routes/__layout.svelte",
   error: ".svelte-kit/build/components/error.svelte",
   routes: [
@@ -1458,6 +1487,13 @@ const manifest = {
       pattern: /^\/$/,
       params: empty,
       a: ["src/routes/__layout.svelte", "src/routes/index.svelte"],
+      b: [".svelte-kit/build/components/error.svelte"]
+    },
+    {
+      type: "page",
+      pattern: /^\/governance\/?$/,
+      params: empty,
+      a: ["src/routes/__layout.svelte", "src/routes/governance/index.svelte"],
       b: [".svelte-kit/build/components/error.svelte"]
     },
     {
@@ -1518,6 +1554,9 @@ const module_lookup = {
     return error;
   }),
   "src/routes/index.svelte": () => Promise.resolve().then(function() {
+    return index$2;
+  }),
+  "src/routes/governance/index.svelte": () => Promise.resolve().then(function() {
     return index$1;
   }),
   "src/routes/subsection.svelte": () => Promise.resolve().then(function() {
@@ -1539,7 +1578,7 @@ const module_lookup = {
     return section4;
   })
 };
-const metadata_lookup = { "src/routes/__layout.svelte": { "entry": "pages/__layout.svelte-a72082c6.js", "css": ["assets/pages/__layout.svelte-beabfd9c.css"], "js": ["pages/__layout.svelte-a72082c6.js", "chunks/vendor-ab5eaa6b.js", "chunks/sbutton-ac14b91c.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, ".svelte-kit/build/components/error.svelte": { "entry": "error.svelte-e35a1b0e.js", "css": [], "js": ["error.svelte-e35a1b0e.js", "chunks/vendor-ab5eaa6b.js"], "styles": [] }, "src/routes/index.svelte": { "entry": "pages/index.svelte-8aef9181.js", "css": [], "js": ["pages/index.svelte-8aef9181.js", "chunks/vendor-ab5eaa6b.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/sbutton-ac14b91c.js", "pages/section1.svelte-10e62eb9.js", "pages/section2.svelte-8c673cd6.js", "pages/section3.svelte-dba07236.js", "pages/section4.svelte-0b605892.js", "pages/subsection.svelte-23e40dfa.js"], "styles": [] }, "src/routes/subsection.svelte": { "entry": "pages/subsection.svelte-23e40dfa.js", "css": [], "js": ["pages/subsection.svelte-23e40dfa.js", "chunks/vendor-ab5eaa6b.js"], "styles": [] }, "src/routes/protocol/index.svelte": { "entry": "pages/protocol/index.svelte-6c73f9da.js", "css": [], "js": ["pages/protocol/index.svelte-6c73f9da.js", "chunks/vendor-ab5eaa6b.js", "chunks/sbutton-ac14b91c.js"], "styles": [] }, "src/routes/section1.svelte": { "entry": "pages/section1.svelte-10e62eb9.js", "css": [], "js": ["pages/section1.svelte-10e62eb9.js", "chunks/vendor-ab5eaa6b.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/sbutton-ac14b91c.js"], "styles": [] }, "src/routes/section2.svelte": { "entry": "pages/section2.svelte-8c673cd6.js", "css": [], "js": ["pages/section2.svelte-8c673cd6.js", "chunks/vendor-ab5eaa6b.js"], "styles": [] }, "src/routes/section3.svelte": { "entry": "pages/section3.svelte-dba07236.js", "css": [], "js": ["pages/section3.svelte-dba07236.js", "chunks/vendor-ab5eaa6b.js"], "styles": [] }, "src/routes/section4.svelte": { "entry": "pages/section4.svelte-0b605892.js", "css": [], "js": ["pages/section4.svelte-0b605892.js", "chunks/vendor-ab5eaa6b.js"], "styles": [] } };
+const metadata_lookup = { "src/routes/__layout.svelte": { "entry": "pages/__layout.svelte-5f1c19d0.js", "css": ["assets/pages/__layout.svelte-fb9c0026.css", "assets/vendor-a36399ba.css"], "js": ["pages/__layout.svelte-5f1c19d0.js", "chunks/vendor-c5ec5885.js", "chunks/sbutton-2227e717.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js"], "styles": [] }, ".svelte-kit/build/components/error.svelte": { "entry": "error.svelte-6e465d37.js", "css": ["assets/vendor-a36399ba.css"], "js": ["error.svelte-6e465d37.js", "chunks/vendor-c5ec5885.js"], "styles": [] }, "src/routes/index.svelte": { "entry": "pages/index.svelte-f34bb59b.js", "css": ["assets/vendor-a36399ba.css"], "js": ["pages/index.svelte-f34bb59b.js", "chunks/vendor-c5ec5885.js", "chunks/navigation-51f4a605.js", "chunks/singletons-12a22614.js", "chunks/sbutton-2227e717.js", "pages/section1.svelte-e2e91444.js", "pages/section2.svelte-d4ff7816.js", "pages/section4.svelte-a18153c5.js"], "styles": [] }, "src/routes/governance/index.svelte": { "entry": "pages/governance/index.svelte-dd6675f1.js", "css": ["assets/vendor-a36399ba.css"], "js": ["pages/governance/index.svelte-dd6675f1.js", "chunks/vendor-c5ec5885.js"], "styles": [] }, "src/routes/subsection.svelte": { "entry": "pages/subsection.svelte-7528dd14.js", "css": ["assets/vendor-a36399ba.css"], "js": ["pages/subsection.svelte-7528dd14.js", "chunks/vendor-c5ec5885.js"], "styles": [] }, "src/routes/protocol/index.svelte": { "entry": "pages/protocol/index.svelte-495a5b77.js", "css": ["assets/vendor-a36399ba.css"], "js": ["pages/protocol/index.svelte-495a5b77.js", "chunks/vendor-c5ec5885.js", "chunks/sbutton-2227e717.js"], "styles": [] }, "src/routes/section1.svelte": { "entry": "pages/section1.svelte-e2e91444.js", "css": ["assets/vendor-a36399ba.css"], "js": ["pages/section1.svelte-e2e91444.js", "chunks/vendor-c5ec5885.js"], "styles": [] }, "src/routes/section2.svelte": { "entry": "pages/section2.svelte-d4ff7816.js", "css": ["assets/vendor-a36399ba.css"], "js": ["pages/section2.svelte-d4ff7816.js", "chunks/vendor-c5ec5885.js"], "styles": [] }, "src/routes/section3.svelte": { "entry": "pages/section3.svelte-c7feda01.js", "css": ["assets/vendor-a36399ba.css"], "js": ["pages/section3.svelte-c7feda01.js", "chunks/vendor-c5ec5885.js"], "styles": [] }, "src/routes/section4.svelte": { "entry": "pages/section4.svelte-a18153c5.js", "css": ["assets/vendor-a36399ba.css"], "js": ["pages/section4.svelte-a18153c5.js", "chunks/vendor-c5ec5885.js"], "styles": [] } };
 async function load_component(file) {
   const { entry, css: css2, js, styles } = metadata_lookup[file];
   return {
@@ -1556,39 +1595,30 @@ function render(request, {
   const host = request.headers["host"];
   return respond({ ...request, host }, options, { prerender });
 }
+var app = '@import url("https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400;500;600;700&display=swap");\n/*! tailwindcss v2.2.15 | MIT License | https://tailwindcss.com*/\n/*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */html{-webkit-text-size-adjust:100%;line-height:1.15;-moz-tab-size:4;-o-tab-size:4;tab-size:4}body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;margin:0}hr{color:inherit;height:0}abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{border-color:inherit;text-indent:0}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}::-moz-focus-inner{border-style:none;padding:0}:-moz-focusring{outline:1px dotted ButtonText}:-moz-ui-invalid{box-shadow:none}legend{padding:0}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}button{background-color:transparent;background-image:none}fieldset,ol,ul{margin:0;padding:0}ol,ul{list-style:none}html{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;line-height:1.5}body{font-family:inherit;line-height:inherit}*,:after,:before{border:0 solid;box-sizing:border-box}hr{border-top-width:1px}img{border-style:solid}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{color:#9ca3af;opacity:1}input:-ms-input-placeholder,textarea:-ms-input-placeholder{color:#9ca3af;opacity:1}input::placeholder,textarea::placeholder{color:#9ca3af;opacity:1}[role=button],button{cursor:pointer}:-moz-focusring{outline:auto}table{border-collapse:collapse}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}button,input,optgroup,select,textarea{color:inherit;line-height:inherit;padding:0}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{height:auto;max-width:100%}[hidden]{display:none}*,:after,:before{--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-transform:translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));--tw-border-opacity:1;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;border-color:rgba(229,231,235,var(--tw-border-opacity))}.container{width:100%}@media (min-width:640px){.container{max-width:640px}}@media (min-width:768px){.container{max-width:768px}}@media (min-width:1024px){.container{max-width:1024px}}@media (min-width:1280px){.container{max-width:1280px}}@media (min-width:1536px){.container{max-width:1536px}}.static{position:static}.sticky{position:sticky}.top-0{top:0}.z-50{z-index:50}.col-span-4{grid-column:span 4/span 4}.col-span-2{grid-column:span 2/span 2}.col-span-8{grid-column:span 8/span 8}.my-2{margin-bottom:.5rem;margin-top:.5rem}.mx-auto{margin-left:auto;margin-right:auto}.my-24{margin-bottom:6rem;margin-top:6rem}.my-auto{margin-bottom:auto;margin-top:auto}.ml-auto{margin-left:auto}.mb-2{margin-bottom:.5rem}.mt-24{margin-top:6rem}.mb-16{margin-bottom:4rem}.mb-8{margin-bottom:2rem}.mt-8{margin-top:2rem}.mt-2{margin-top:.5rem}.mr-2{margin-right:.5rem}.mr-1{margin-right:.25rem}.mt-6{margin-top:1.5rem}.mt-4{margin-top:1rem}.mt-3{margin-top:.75rem}.mt-10{margin-top:2.5rem}.inline-block{display:inline-block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-10{height:2.5rem}.h-screen{height:100vh}.h-5{height:1.25rem}.h-44{height:11rem}.h-64{height:16rem}.min-h-screen{min-height:100vh}.w-full{width:100%}.w-1\\/2{width:50%}.w-3\\/4{width:75%}.w-5{width:1.25rem}.w-48{width:12rem}.max-w-2xl{max-width:42rem}.max-w-4xl{max-width:56rem}.max-w-lg{max-width:32rem}.max-w-sm{max-width:24rem}.transform{transform:var(--tw-transform)}.cursor-pointer{cursor:pointer}.list-none{list-style-type:none}.appearance-none{-webkit-appearance:none;-moz-appearance:none;appearance:none}.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-cols-12{grid-template-columns:repeat(12,minmax(0,1fr))}.flex-row{flex-direction:row}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-start{justify-content:flex-start}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-12{gap:3rem}.self-center{align-self:center}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.whitespace-nowrap{white-space:nowrap}.rounded-md{border-radius:.375rem}.rounded-full{border-radius:9999px}.rounded{border-radius:.25rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-supagreen-dark{--tw-border-opacity:1;border-color:rgba(121,211,138,var(--tw-border-opacity))}.border-gray-700{--tw-border-opacity:1;border-color:rgba(55,65,81,var(--tw-border-opacity))}.border-gray-400{--tw-border-opacity:1;border-color:rgba(156,163,175,var(--tw-border-opacity))}.border-supadark-light{--tw-border-opacity:1;border-color:rgba(48,48,48,var(--tw-border-opacity))}.bg-supadark{--tw-bg-opacity:1;background-color:rgba(13,16,22,var(--tw-bg-opacity))}.bg-transparent{background-color:transparent}.bg-supadark-dark{--tw-bg-opacity:1;background-color:rgba(13,16,22,var(--tw-bg-opacity))}.bg-gray-600{--tw-bg-opacity:1;background-color:rgba(75,85,99,var(--tw-bg-opacity))}.bg-supagreen{--tw-bg-opacity:1;background-color:rgba(38,155,168,var(--tw-bg-opacity))}.bg-green-900{--tw-bg-opacity:1;background-color:rgba(6,78,59,var(--tw-bg-opacity))}.bg-supagreen-dark{--tw-bg-opacity:1;background-color:rgba(121,211,138,var(--tw-bg-opacity))}.bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}.from-supagreen-dark{--tw-gradient-from:#79d38a;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(121,211,138,0))}.to-supagreen{--tw-gradient-to:#269ba8}.bg-clip-text{-webkit-background-clip:text;background-clip:text}.fill-current{fill:currentColor}.p-1{padding:.25rem}.p-10{padding:2.5rem}.p-2{padding:.5rem}.p-3{padding:.75rem}.p-4{padding:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-2{padding-bottom:.5rem;padding-top:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.py-1{padding-bottom:.25rem;padding-top:.25rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-16{padding-bottom:4rem;padding-top:4rem}.px-4{padding-left:1rem;padding-right:1rem}.pl-3{padding-left:.75rem}.pr-2{padding-right:.5rem}.pt-0{padding-top:0}.pb-4{padding-bottom:1rem}.pt-4{padding-top:1rem}.pt-2{padding-top:.5rem}.pt-16{padding-top:4rem}.pl-2{padding-left:.5rem}.pt-8{padding-top:2rem}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.align-bottom{vertical-align:bottom}.font-inter{font-family:Inter}.font-commorant{font-family:Cormorant SC}.font-athelas{font-family:Athelas}.text-sm{font-size:.875rem;line-height:1.25rem}.text-2xl{font-size:1.5rem;line-height:2rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-8xl{font-size:6rem;line-height:1}.text-5xl{font-size:3rem;line-height:1}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-base{font-size:1rem;line-height:1.5rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.font-bold{font-weight:700}.font-black{font-weight:900}.font-thin{font-weight:100}.font-medium{font-weight:500}.font-extrabold{font-weight:800}.uppercase{text-transform:uppercase}.tracking-wider{letter-spacing:.05em}.tracking-widest{letter-spacing:.1em}.tracking-tighter{letter-spacing:-.05em}.tracking-wide{letter-spacing:.025em}.text-white{--tw-text-opacity:1;color:rgba(255,255,255,var(--tw-text-opacity))}.text-gray-300{--tw-text-opacity:1;color:rgba(209,213,219,var(--tw-text-opacity))}.text-gray-50{--tw-text-opacity:1;color:rgba(249,250,251,var(--tw-text-opacity))}.text-gray-400{--tw-text-opacity:1;color:rgba(156,163,175,var(--tw-text-opacity))}.text-gray-200{--tw-text-opacity:1;color:rgba(229,231,235,var(--tw-text-opacity))}.text-supagreen-dark{--tw-text-opacity:1;color:rgba(121,211,138,var(--tw-text-opacity))}.text-supadark{--tw-text-opacity:1;color:rgba(13,16,22,var(--tw-text-opacity))}.text-transparent{color:transparent}.text-supadark-light{--tw-text-opacity:1;color:rgba(48,48,48,var(--tw-text-opacity))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.outline-none{outline:2px solid transparent;outline-offset:2px}.ring-offset-2{--tw-ring-offset-width:2px}.ring-offset-current{--tw-ring-offset-color:currentColor}.transition{transition-duration:.15s;transition-property:background-color,border-color,color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:background-color,border-color,color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:background-color,border-color,color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-500{transition-duration:.5s}.ease-in-out{transition-timing-function:cubic-bezier(.4,0,.2,1)}.hover\\:text-supagreen-dark:hover{--tw-text-opacity:1;color:rgba(121,211,138,var(--tw-text-opacity))}.hover\\:text-black:hover{--tw-text-opacity:1;color:rgba(0,0,0,var(--tw-text-opacity))}.hover\\:text-green-500:hover{--tw-text-opacity:1;color:rgba(16,185,129,var(--tw-text-opacity))}.hover\\:text-supagreen:hover{--tw-text-opacity:1;color:rgba(38,155,168,var(--tw-text-opacity))}.focus\\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.active\\:outline-none:active{outline:2px solid transparent;outline-offset:2px}@media (min-width:640px){.sm\\:ml-auto{margin-left:auto}.sm\\:mt-0{margin-top:0}}@media (min-width:768px){.md\\:mb-0{margin-bottom:0}.md\\:grid{display:grid}.md\\:hidden{display:none}.md\\:w-1\\/2{width:50%}.md\\:w-4\\/5{width:80%}.md\\:flex-row{flex-direction:row}.md\\:pr-24{padding-right:6rem}.md\\:text-4xl{font-size:2.25rem;line-height:2.5rem}}@media (min-width:1024px){.lg\\:mr-8{margin-right:2rem}.lg\\:inline-flex{display:inline-flex}.lg\\:w-5\\/6{width:83.333333%}.lg\\:max-w-xl{max-width:36rem}.lg\\:flex-grow{flex-grow:1}.lg\\:px-28{padding-left:7rem;padding-right:7rem}.lg\\:px-6{padding-left:1.5rem;padding-right:1.5rem}.lg\\:text-8xl{font-size:6rem;line-height:1}}@media (min-width:1280px){.xl\\:mr-20{margin-right:5rem}}';
 const Sbutton = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<button class="${"w-full p-1 my-2 ml-auto text-base font-medium transition duration-500 ease-in-out transform bg-gradient-to-r from-supagreen-dark to-supagreen rounded focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:b-gblue-700"}"><div class="${"bg-supadark font-commorant px-8 py-2"}">${slots.default ? slots.default({}) : ``}</div></button>`;
+  return `<button class="${"w-full p-1 my-2 ml-auto font-bold text-sm tracking-wider transition duration-500 ease-in-out transform bg-gradient-to-r bg-transparent border border-supagreen-dark focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:b-gblue-700"}"><div class="${"font-inter uppercase px-6 py-2 hover:text-supagreen-dark"}">${slots.default ? slots.default({}) : ``}</div></button>`;
 });
-var app = '@import url("https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400;500;600;700&display=swap");\n/*! tailwindcss v2.2.15 | MIT License | https://tailwindcss.com*/\n/*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */html{-webkit-text-size-adjust:100%;line-height:1.15;-moz-tab-size:4;-o-tab-size:4;tab-size:4}body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;margin:0}hr{color:inherit;height:0}abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{border-color:inherit;text-indent:0}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}::-moz-focus-inner{border-style:none;padding:0}:-moz-focusring{outline:1px dotted ButtonText}:-moz-ui-invalid{box-shadow:none}legend{padding:0}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}button{background-color:transparent;background-image:none}fieldset,ol,ul{margin:0;padding:0}ol,ul{list-style:none}html{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;line-height:1.5}body{font-family:inherit;line-height:inherit}*,:after,:before{border:0 solid;box-sizing:border-box}hr{border-top-width:1px}img{border-style:solid}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{color:#9ca3af;opacity:1}input:-ms-input-placeholder,textarea:-ms-input-placeholder{color:#9ca3af;opacity:1}input::placeholder,textarea::placeholder{color:#9ca3af;opacity:1}[role=button],button{cursor:pointer}:-moz-focusring{outline:auto}table{border-collapse:collapse}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}button,input,optgroup,select,textarea{color:inherit;line-height:inherit;padding:0}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{height:auto;max-width:100%}[hidden]{display:none}*,:after,:before{--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-transform:translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));--tw-border-opacity:1;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;border-color:rgba(229,231,235,var(--tw-border-opacity))}.container{width:100%}@media (min-width:640px){.container{max-width:640px}}@media (min-width:768px){.container{max-width:768px}}@media (min-width:1024px){.container{max-width:1024px}}@media (min-width:1280px){.container{max-width:1280px}}@media (min-width:1536px){.container{max-width:1536px}}.static{position:static}.relative{position:relative}.sticky{position:sticky}.top-0{top:0}.z-50{z-index:50}.col-span-4{grid-column:span 4/span 4}.col-span-2{grid-column:span 2/span 2}.col-span-8{grid-column:span 8/span 8}.m-auto{margin:auto}.my-2{margin-bottom:.5rem;margin-top:.5rem}.mx-auto{margin-left:auto;margin-right:auto}.my-auto{margin-bottom:auto;margin-top:auto}.my-8{margin-bottom:2rem;margin-top:2rem}.my-3{margin-bottom:.75rem;margin-top:.75rem}.mx-8{margin-left:2rem;margin-right:2rem}.ml-auto{margin-left:auto}.mb-2{margin-bottom:.5rem}.mt-20{margin-top:5rem}.mb-16{margin-bottom:4rem}.mb-8{margin-bottom:2rem}.mt-10{margin-top:2.5rem}.mt-6{margin-top:1.5rem}.mt-2{margin-top:.5rem}.mr-1{margin-right:.25rem}.mb-6{margin-bottom:1.5rem}.mr-2{margin-right:.5rem}.ml-3{margin-left:.75rem}.mt-4{margin-top:1rem}.mt-3{margin-top:.75rem}.inline-block{display:inline-block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-10{height:2.5rem}.h-screen{height:100vh}.h-44{height:11rem}.h-5{height:1.25rem}.h-64{height:16rem}.min-h-screen{min-height:100vh}.w-full{width:100%}.w-1\\/2{width:50%}.w-1{width:.25rem}.w-1\\/3{width:33.333333%}.w-5{width:1.25rem}.w-48{width:12rem}.max-w-lg{max-width:32rem}.max-w-6xl{max-width:72rem}.max-w-2xl{max-width:42rem}.max-w-4xl{max-width:56rem}.max-w-sm{max-width:24rem}.transform{transform:var(--tw-transform)}.cursor-pointer{cursor:pointer}.list-none{list-style-type:none}.appearance-none{-webkit-appearance:none;-moz-appearance:none;appearance:none}.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-cols-12{grid-template-columns:repeat(12,minmax(0,1fr))}.flex-row{flex-direction:row}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-start{justify-content:flex-start}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-12{gap:3rem}.self-center{align-self:center}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.whitespace-nowrap{white-space:nowrap}.rounded{border-radius:.25rem}.rounded-md{border-radius:.375rem}.rounded-full{border-radius:9999px}.rounded-2xl{border-radius:1rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-4{border-width:4px}.border-8{border-width:8px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-gray-700{--tw-border-opacity:1;border-color:rgba(55,65,81,var(--tw-border-opacity))}.border-supagreen-dark{--tw-border-opacity:1;border-color:rgba(36,231,149,var(--tw-border-opacity))}.border-supadark-light{--tw-border-opacity:1;border-color:rgba(48,48,48,var(--tw-border-opacity))}.bg-supadark{--tw-bg-opacity:1;background-color:rgba(31,31,31,var(--tw-bg-opacity))}.bg-supadark-dark{--tw-bg-opacity:1;background-color:rgba(27,28,30,var(--tw-bg-opacity))}.bg-gray-600{--tw-bg-opacity:1;background-color:rgba(75,85,99,var(--tw-bg-opacity))}.bg-supagreen{--tw-bg-opacity:1;background-color:rgba(103,233,241,var(--tw-bg-opacity))}.bg-supagreen-dark{--tw-bg-opacity:1;background-color:rgba(36,231,149,var(--tw-bg-opacity))}.bg-supadark-light{--tw-bg-opacity:1;background-color:rgba(48,48,48,var(--tw-bg-opacity))}.bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}.from-supagreen-dark{--tw-gradient-from:#24e795;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(36,231,149,0))}.to-supagreen{--tw-gradient-to:#67e9f1}.bg-clip-text{-webkit-background-clip:text;background-clip:text}.fill-current{fill:currentColor}.p-1{padding:.25rem}.p-10{padding:2.5rem}.p-2{padding:.5rem}.p-3{padding:.75rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.px-8{padding-left:2rem;padding-right:2rem}.py-2{padding-bottom:.5rem;padding-top:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.py-1{padding-bottom:.25rem;padding-top:.25rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-16{padding-bottom:4rem;padding-top:4rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.pl-3{padding-left:.75rem}.pr-2{padding-right:.5rem}.pt-0{padding-top:0}.pt-8{padding-top:2rem}.pt-4{padding-top:1rem}.pt-16{padding-top:4rem}.pb-4{padding-bottom:1rem}.text-left{text-align:left}.text-center{text-align:center}.align-bottom{vertical-align:bottom}.font-commorant{font-family:Cormorant SC}.font-inter{font-family:Inter}.font-athelas{font-family:Athelas}.text-base{font-size:1rem;line-height:1.5rem}.text-2xl{font-size:1.5rem;line-height:2rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-sm{font-size:.875rem;line-height:1.25rem}.font-medium{font-weight:500}.font-bold{font-weight:700}.font-thin{font-weight:100}.font-extrabold{font-weight:800}.uppercase{text-transform:uppercase}.leading-relaxed{line-height:1.625}.tracking-tighter{letter-spacing:-.05em}.tracking-wide{letter-spacing:.025em}.text-white{--tw-text-opacity:1;color:rgba(255,255,255,var(--tw-text-opacity))}.text-gray-300{--tw-text-opacity:1;color:rgba(209,213,219,var(--tw-text-opacity))}.text-gray-50{--tw-text-opacity:1;color:rgba(249,250,251,var(--tw-text-opacity))}.text-gray-400{--tw-text-opacity:1;color:rgba(156,163,175,var(--tw-text-opacity))}.text-supadark-light{--tw-text-opacity:1;color:rgba(48,48,48,var(--tw-text-opacity))}.text-supadark{--tw-text-opacity:1;color:rgba(31,31,31,var(--tw-text-opacity))}.text-transparent{color:transparent}.text-gray-200{--tw-text-opacity:1;color:rgba(229,231,235,var(--tw-text-opacity))}.text-supagreen{--tw-text-opacity:1;color:rgba(103,233,241,var(--tw-text-opacity))}.text-supagreen-dark{--tw-text-opacity:1;color:rgba(36,231,149,var(--tw-text-opacity))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.outline-none{outline:2px solid transparent;outline-offset:2px}.ring-offset-2{--tw-ring-offset-width:2px}.ring-offset-current{--tw-ring-offset-color:currentColor}.transition{transition-duration:.15s;transition-property:background-color,border-color,color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:background-color,border-color,color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:background-color,border-color,color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-500{transition-duration:.5s}.ease-in-out{transition-timing-function:cubic-bezier(.4,0,.2,1)}.hover\\:text-green-500:hover{--tw-text-opacity:1;color:rgba(16,185,129,var(--tw-text-opacity))}.hover\\:text-supagreen:hover{--tw-text-opacity:1;color:rgba(103,233,241,var(--tw-text-opacity))}.hover\\:text-black:hover{--tw-text-opacity:1;color:rgba(0,0,0,var(--tw-text-opacity))}.focus\\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.active\\:outline-none:active{outline:2px solid transparent;outline-offset:2px}@media (min-width:640px){.sm\\:ml-auto{margin-left:auto}.sm\\:mt-0{margin-top:0}}@media (min-width:768px){.md\\:mb-0{margin-bottom:0}.md\\:grid{display:grid}.md\\:hidden{display:none}.md\\:w-1\\/2{width:50%}.md\\:w-4\\/5{width:80%}.md\\:flex-row{flex-direction:row}.md\\:pr-24{padding-right:6rem}.md\\:text-4xl{font-size:2.25rem;line-height:2.5rem}}@media (min-width:1024px){.lg\\:mr-8{margin-right:2rem}.lg\\:inline-flex{display:inline-flex}.lg\\:w-5\\/6{width:83.333333%}.lg\\:max-w-xl{max-width:36rem}.lg\\:flex-grow{flex-grow:1}.lg\\:px-28{padding-left:7rem;padding-right:7rem}.lg\\:px-6{padding-left:1.5rem;padding-right:1.5rem}.lg\\:text-4xl{font-size:2.25rem;line-height:2.5rem}}@media (min-width:1280px){.xl\\:mr-20{margin-right:5rem}}';
 const _layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `
-<div class="${"sticky top-0 z-50 items-center font-inter bg-supadark text-white antialiased "}"><div class="${"items-center pt-4 justify-between w-full px-5 overflow-y-auto whitespace-nowrap scroll-hidden pb-4 border-b border-supadark-light"}">
-    <div class="${"flex-col mx-auto md:hidden flex overflow-hidden"}"><div class="${"flex flex-row"}"><h1 class="${"text-center p-2 text-2xl font-medium tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-supagreen-dark to-supagreen transition duration-500 ease-in-out transform cursor-pointer hover:text-green-500 lg:text-x lg:mr-8"}">Supaheroes
-        </h1>
-        <svg xmlns="${"http://www.w3.org/2000/svg"}" x="${"0px"}" y="${"0px"}" width="${"24"}" height="${"24"}" viewBox="${"0 0 172 172"}" class="${"h-5 w-5 text-white fill-current self-center"}" style="${"fill:#000000;"}"><g fill="${"none"}" fill-rule="${"nonzero"}" stroke="${"none"}" stroke-width="${"1"}" stroke-linecap="${"butt"}" stroke-linejoin="${"miter"}" stroke-miterlimit="${"10"}" stroke-dasharray="${""}" stroke-dashoffset="${"0"}" font-family="${"none"}" font-weight="${"none"}" font-size="${"none"}" text-anchor="${"none"}" style="${"mix-blend-mode: normal"}"><path d="${"M0,172v-172h172v172z"}" fill="${"none"}"></path><g fill="${"#ecf0f1"}"><path d="${"M14.33333,35.83333v14.33333h143.33333v-14.33333zM14.33333,78.83333v14.33333h143.33333v-14.33333zM14.33333,121.83333v14.33333h143.33333v-14.33333z"}"></path></g></g></svg></div>
+ <div class="${"sticky top-0 z-50 items-center font-inter bg-transparent text-white antialiased "}"><div class="${"items-center pt-4 justify-between w-full px-5 overflow-y-auto whitespace-nowrap scroll-hidden pb-4 "}">
+   <div class="${"flex-col mx-auto md:hidden flex overflow-hidden"}"><div class="${"flex flex-row"}"><h1 class="${"text-center p-2 text-2xl font-medium tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-supagreen-dark to-supagreen transition duration-500 ease-in-out transform cursor-pointer hover:text-green-500 lg:text-x lg:mr-8"}">Supaheroes
+       </h1>
+       <svg xmlns="${"http://www.w3.org/2000/svg"}" x="${"0px"}" y="${"0px"}" width="${"24"}" height="${"24"}" viewBox="${"0 0 172 172"}" class="${"h-5 w-5 text-white fill-current self-center"}" style="${"fill:#000000;"}"><g fill="${"none"}" fill-rule="${"nonzero"}" stroke="${"none"}" stroke-width="${"1"}" stroke-linecap="${"butt"}" stroke-linejoin="${"miter"}" stroke-miterlimit="${"10"}" stroke-dasharray="${""}" stroke-dashoffset="${"0"}" font-family="${"none"}" font-weight="${"none"}" font-size="${"none"}" text-anchor="${"none"}" style="${"mix-blend-mode: normal"}"><path d="${"M0,172v-172h172v172z"}" fill="${"none"}"></path><g fill="${"#ecf0f1"}"><path d="${"M14.33333,35.83333v14.33333h143.33333v-14.33333zM14.33333,78.83333v14.33333h143.33333v-14.33333zM14.33333,121.83333v14.33333h143.33333v-14.33333z"}"></path></g></g></svg></div>
 
-      ${``}</div>
-    
-    <div class="${"sticky top-0 z-50 w-full md:grid grid-cols-12 hidden"}"><div href="${"/"}" class="${"lg:px-6 col-span-2 align-bottom flex focus:outline-none"}"><h2 class="${"text-2xl font-athelas uppercase font-extrabold mx-auto pt-8 text-transparent bg-clip-text bg-gradient-to-r from-supagreen-dark to-supagreen transition duration-500 ease-in-out transform cursor-pointer hover:text-green-500 lg:text-x lg:mr-8"}">Supaheroes
-        </h2></div>
-      <nav class="${"flex col-span-8 "}"><ul class="${"items-center mx-auto font-medium tracking-wide list-none inline-flex"}"><li><a href="${"https://docs-supaheroes.netlify.app/"}" class="${"px-4 py-1 mr-1 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen "}">Learn</a></li>
+     ${``}</div>
+   
+   <div class="${"top-0 z-50 w-full overflow-hidden md:grid grid-cols-12 hidden"}"><div class="${"lg:px-6 col-span-2 align-bottom flex focus:outline-none"}"><img src="${"/logosupa.svg"}" width="${"84"}" height="${"45"}" alt="${"logo"}">
+       <a href="${"/"}" class="${"text-2xl pl-2 font-athelas uppercase font-extrabold mx-auto pt-8 bg-clip-text text-supagreen-dark transition duration-500 ease-in-out transform cursor-pointer hover:text-green-500 lg:text-x lg:mr-8"}">Supaheroes
+       </a></div>
+     <nav class="${"flex col-span-8 "}"><ul class="${"items-center mx-auto font-medium tracking-wide list-none inline-flex"}"><li><a href="${"https://docs-supaheroes.netlify.app/"}" class="${"px-4 py-1 mr-1 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen-dark "}">Learn</a></li>
 
-          <li><a href="${"/Governance"}" class="${"px-4 py-1 mr-1 text-base transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen "}">Governance</a></li>
-          <li><a href="${"/protocol"}" class="${"px-4 py-1 mr-1 text-base transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen "}">Community</a></li></ul></nav>
-      <div class="${"col-span-2 w-48 p-4 flex"}">${validate_component(Sbutton, "Sbutton").$$render($$result, {}, {}, { default: () => `Launch App` })}</div></div></div></div>
-
-<div class="${"min-h-screen relative bg-supadark"}">${slots.default ? slots.default({}) : ``}</div>
+         <li><a href="${"/governance"}" class="${"px-4 py-1 mr-1 text-base transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen-dark "}">Governance</a></li>
+         <li><a href="${"https://twitter.com/SupaheroesFund"}" class="${"px-4 py-1 mr-1 text-base transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen-dark "}">Community</a></li></ul></nav>
+     <div class="${"col-span-2 w-48 p-4 text-supadark-black flex"}">${validate_component(Sbutton, "Sbutton").$$render($$result, {}, {}, { default: () => `Launch App` })}</div></div></div></div>
 
 
-<div class="${"items-center "}"><footer class="${"text-gray-200 transition duration-500 ease-in-out transform bg-supadark border-t border-supadark-light"}"><div class="${"flex flex-col flex-wrap justify-center p-5 md:flex-row"}"><nav class="${"flex flex-wrap items-center justify-center w-full mx-auto mb-6 text-base nprd"}"><a href="${"/"}" class="${"px-4 py-1 mr-1 text-xs transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-black "}">Hackathons</a>
-        <a href="${"/"}" class="${"px-4 py-1 mr-1 text-xs transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-black "}">Ecosystem</a>
-        <a href="${"/"}" class="${"px-4 py-1 mr-1 text-xs transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-black "}">Press</a>
-        <a href="${"/"}" class="${"px-4 py-1 mr-1 text-xs transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-black "}">FAQ</a></nav>
-      <span class="${"inline-flex justify-center w-full mx-auto mt-2 mr-2 sm:ml-auto sm:mt-0"}"><a class="${"text-supagreen hover:text-black"}" href="${"/"}"><svg fill="${"currentColor"}" stroke-linecap="${"round"}" stroke-linejoin="${"round"}" stroke-width="${"2"}" class="${"w-5 h-5"}" viewBox="${"0 0 24 24"}"><path d="${"M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"}"></path></svg></a>
-        <a class="${"ml-3 text-supagreen-dark hover:text-black"}" href="${"/"}"><svg fill="${"currentColor"}" stroke-linecap="${"round"}" stroke-linejoin="${"round"}" stroke-width="${"2"}" class="${"w-5 h-5"}" viewBox="${"0 0 24 24"}"><path d="${"M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"}"></path></svg></a>
-        <a class="${"ml-3 text-supagreen hover:text-black"}" href="${"/"}"><svg fill="${"none"}" stroke="${"currentColor"}" stroke-linecap="${"round"}" stroke-linejoin="${"round"}" stroke-width="${"2"}" class="${"w-5 h-5"}" viewBox="${"0 0 24 24"}"><rect width="${"20"}" height="${"20"}" x="${"2"}" y="${"2"}" rx="${"5"}" ry="${"5"}"></rect><path d="${"M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"}"></path></svg></a>
-        <a class="${"ml-3 text-supagreen-dark hover:text-black"}" href="${"/"}"><svg fill="${"currentColor"}" stroke="${"currentColor"}" stroke-linecap="${"round"}" stroke-linejoin="${"round"}" stroke-width="${"0"}" class="${"w-5 h-5"}" viewBox="${"0 0 24 24"}"><path stroke="${"none"}" d="${"M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"}"></path><circle cx="${"4"}" cy="${"4"}" r="${"2"}" stroke="${"none"}"></circle></svg></a></span></div></footer>
-</div>`;
+<div class="${"bg-supadark"}">${slots.default ? slots.default({}) : ``}</div>`;
 });
 var __layout = /* @__PURE__ */ Object.freeze({
   __proto__: null,
@@ -1621,15 +1651,12 @@ var error = /* @__PURE__ */ Object.freeze({
   load
 });
 const Section1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<section class="${"section min-h-screen flex"}"><div class="${"w-1/2 mx-auto my-auto"}"><img data-aos="${"fade-up"}" class="${"mt-10 mx-auto"}" width="${"800"}" height="${"800"}" src="${"https://ik.imagekit.io/1irdz9lsyrw/greek_P8indg2J_Jz.png?updatedAt=1638371193515"}" alt="${""}"></div>
-  <div class="${"h-screen w-1 bg-supagreen-dark"}"></div>
-  <div class="${"w-1/2 mx-auto my-auto"}"><div class="${"text-gray-300"}"><p data-aos="${"fade-up"}" class="${"text-gray-50 max-w-lg mx-auto font-bold font-commorant text-4xl"}">Building on What Works
-      </p>
-      <p data-aos="${"fade-up"}" class="${"my-8 text-left font-inter max-w-lg mx-auto"}">Built on top of the foundational knowledge of the past for businesses and projects of today. Connecting the latest DeFi innovations for crowdfunding mechanisms that are understood and loved by many.
-      </p></div>
-    <div data-aos="${"fade-up"}" class="${"max-w-lg mx-auto mt-6"}">${validate_component(Sbutton, "Sbutton").$$render($$result, {}, {}, {
-    default: () => `<p class="${"text-white"}">Learn How it Works</p>`
-  })}</div></div></section>`;
+  return `<section class="${"section bg-green-900"}"><div class="${"min-h-screen flex flex-col items-center justify-center"}"><div class="${"w-1/2 mx-auto"}"><p class="${"text-gray-50 w-full mx-auto font-bold text-center font-commorant uppercase border-b pb-4 text-4xl border-supagreen-dark"}">Success Helps Others
+    </p>
+    <p class="${"text-gray-300 w-full mx-auto text-center font-inter uppercase text-lg pt-4"}">Your Success directly contributes to Public Goods fund \u{1F496}
+    </p></div>
+
+  <div class="${"w-full mx-auto"}"><img class="${"mx-auto"}" width="${"80%"}" height="${"50%"}" src="${"economy.png"}" alt="${""}"></div></div></section>`;
 });
 var section1 = /* @__PURE__ */ Object.freeze({
   __proto__: null,
@@ -1637,22 +1664,437 @@ var section1 = /* @__PURE__ */ Object.freeze({
   "default": Section1
 });
 const Section2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<section class="${"section min-h-screen"}"><div class="${"flex max-w-6xl mx-auto flex-wrap overflow-hidden"}"><div class="${"my-3 px-3 w-1/3 overflow-hidden pt-8"}"><div data-aos="${"fade-up"}" class="${"bg-supadark-light rounded-2xl mx-8 border-4 border-supagreen-dark"}"><img class="${"m-auto"}" width="${"300px"}" height="${"300px"}" src="${"https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/premium/bulb-dynamic-premium.png"}" alt="${"Receipt"}"></div>
-      <p data-aos="${"fade-up"}" class="${"text-gray-50 text-2xl font-inter font-bold mx-8 pt-8"}">Permissionless</p>
-      <p data-aos="${"fade-up"}" class="${"text-gray-400 mx-8 pt-4"}">Launch ideas without permissions! Unleash your creativity and let the crowd to judge. No rules, no censorship, and no bias because we believe that the best innovations are still unknown.</p></div>
-  
-    <div class="${"px-3 w-1/3 overflow-hidden"}"><div data-aos="${"fade-up"}" class="${"bg-supadark-light rounded-2xl mx-8 border-8 border-supagreen-dark"}"><img class="${"m-auto"}" width="${"300px"}" height="${"300px"}" src="${"https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/premium/sheild-dynamic-premium.png"}" alt="${"Receipt"}"></div>
-      <p data-aos="${"fade-up"}" class="${"text-gray-50 text-2xl font-inter font-bold mx-8 pt-8"}">Built-in Self-Dispute</p>
-      <p data-aos="${"fade-up"}" class="${"text-gray-400 mx-8 pt-4"}">Upon contributing, contributors are awarded receipt NFT that provide voting power over the campaign progression. NFT holders will be able to stop a campaign if found to be a fraud by the majority vote. Freely contribute to projects you like without worrying about rug pulls.</p></div>
-  
-    <div class="${"my-3 px-3 w-1/3 overflow-hidden pt-8"}"><div data-aos="${"fade-up"}" class="${"bg-supadark-light rounded-2xl mx-8 border-4 border-supagreen-dark"}"><img class="${"m-auto"}" width="${"300px"}" height="${"300px"}" src="${"https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/premium/locker-dynamic-premium.png"}" alt="${"Receipt"}"></div>
-      <p data-aos="${"fade-up"}" class="${"text-gray-50 text-2xl font-inter font-bold mx-8 pt-8"}">DeFi Compatible</p>
-      <p data-aos="${"fade-up"}" class="${"text-gray-400 mx-8 pt-4"}">We accept the latest and market proven tokens to support your crowdfunding campaigns. Projects may receive up to 2x more funds than requested by accepting interest-earning tokens.</p></div></div></section>`;
+  return `<section class="${"section bg-green-900"}"><div style="${"background: url(/bg2.png);"}" class="${"mx-auto h-screen overflow-hidden w-full items-center justify-center flex flex-col"}"><div class="${"w-3/4 flex flex-row mx-auto"}"><div class="${"w-1/2"}"><h1 class="${"text-8xl font-commorant text-white uppercase font-black"}">DeFi &amp; NFT</h1></div>
+      <div class="${"w-1/2"}"><p class="${"font-inter text-white uppercase font-bold tracking-widest"}">Maximum web3 Experience</p>
+        <p class="${"font-inter text-gray-300 pt-2"}">Experience crowdfunding with DeFi and NFT connected to your campaign. Let the latest financial innovations help you reach your crowdfunding goal while also providing the best crypto experience through NFT.</p></div></div>
+    <div class="${"border-t w-3/4 my-24 border-gray-400"}"></div>
+    <div class="${"w-3/4 flex flex-row mx-auto"}"><div class="${"w-1/2"}"><p class="${"font-inter text-white uppercase font-bold tracking-widest"}">Open Participation and Governance</p>
+        <p class="${"font-inter text-gray-300 pt-2"}">Supaheroes mechanism allow permissionless participation from anyone in the world without KYC or country restrictions. The platform relies on proof of ownership and democratic consensus.</p></div>
+      <div class="${"w-1/2 text-right"}"><h1 class="${"text-8xl font-commorant text-white uppercase font-black"}">Public</h1></div></div></div></section>`;
 });
 var section2 = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   [Symbol.toStringTag]: "Module",
   "default": Section2
+});
+const Section4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return `<section style="${"height: 95vh"}" class="${"section flex justify-center items-center"}"><div class="${"mx-auto text-white rounded-xl p-10"}"><img width="${"800"}" height="${"800"}" class="${"mx-auto"}" src="${"https://ik.imagekit.io/1irdz9lsyrw/greek_P8indg2J_Jz.png?updatedAt=1638371193515"}" alt="${""}">
+      <p class="${"font-commorant uppercase mt-8 text-5xl font-bold text-center"}">House of The DAO Coming Soon
+      </p>
+      <p class="${"font-inter mt-2 text-xl text-gray-400 tracking-widest text-center"}">Public governance for Supaheroes
+       </p></div></section>
+  
+  
+<div class="${""}"><footer class="${"text-gray-200 transition duration-500 ease-in-out transform bg-supadark border-t border-supadark-light"}"><div class="${"flex px-5 py-2 flex-row"}"><h1 class="${"pt-2 text-sm"}">\xA9 Supaheroes DAO</h1>
+      <span class="${"mt-2 pt-2 mr-2 sm:ml-auto sm:mt-0"}"><a class="${"text-supagreen-dark hover:text-black"}" href="${"https://twitter.com/SupaheroesFund"}"><svg fill="${"currentColor"}" stroke-linecap="${"round"}" stroke-linejoin="${"round"}" stroke-width="${"2"}" class="${"w-5 h-5"}" viewBox="${"0 0 24 24"}"><path d="${"M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"}"></path></svg></a></span></div></footer></div>`;
+});
+var section4 = /* @__PURE__ */ Object.freeze({
+  __proto__: null,
+  [Symbol.toStringTag]: "Module",
+  "default": Section4
+});
+var Dot_svelte_svelte_type_style_lang = ".svelte-fp-indicator-list-item.svelte-1ol7yt2{align-items:center;display:flex;margin:1rem;padding:0}.svelte-fp-indicator-list-item-btn.svelte-1ol7yt2{align-self:end;background-color:transparent;border:1px solid #767676;border-radius:.5rem;height:1rem;order:1;width:1rem}.svelte-fp-active.svelte-1ol7yt2{background-color:#767676}.svelte-fp-slide-name.svelte-1ol7yt2{background:rgba(78,85,91,.82);border:1px #4e555b;border-radius:3px;justify-self:start;margin:2rem;order:0;padding:2px;position:absolute;text-align:center}@media only screen and (max-width:600px){.svelte-fp-indicator-list-item-btn.svelte-1ol7yt2{border-radius:.25rem;height:.5rem;width:.5rem}}";
+const css$4 = {
+  code: ".svelte-fp-indicator-list-item.svelte-1ol7yt2{align-items:center;display:flex;margin:1rem;padding:0}.svelte-fp-indicator-list-item-btn.svelte-1ol7yt2{align-self:end;background-color:transparent;border:1px solid #767676;border-radius:.5rem;height:1rem;order:1;width:1rem}.svelte-fp-active.svelte-1ol7yt2{background-color:#767676}.svelte-fp-slide-name.svelte-1ol7yt2{background:rgba(78,85,91,.82);border:1px #4e555b;border-radius:3px;justify-self:start;margin:2rem;order:0;padding:2px;position:absolute;text-align:center}@media only screen and (max-width:600px){.svelte-fp-indicator-list-item-btn.svelte-1ol7yt2{border-radius:.25rem;height:.5rem;width:.5rem}}",
+  map: `{"version":3,"file":"Dot.svelte","sources":["Dot.svelte"],"sourcesContent":["<script>\\n    export let activeSection = 0;\\n    export let index = 0;\\n    export let name = '';\\n    export let names = false;\\n\\n    const goto = () => {\\n        activeSection = index;\\n    }\\n<\/script>\\n\\n<li class=\\"svelte-fp-indicator-list-item\\">\\n    {#if names}\\n        <p class=\\"svelte-fp-slide-name\\">\\n            {name}\\n        </p>\\n    {/if}\\n    <button class=\\"svelte-fp-indicator-list-item-btn {activeSection === index ? 'svelte-fp-active':''}\\" on:click={goto}>\\n    </button>\\n</li>\\n\\n<style>.svelte-fp-indicator-list-item{align-items:center;display:flex;margin:1rem;padding:0}.svelte-fp-indicator-list-item-btn{align-self:end;background-color:transparent;border:1px solid #767676;border-radius:.5rem;height:1rem;order:1;width:1rem}.svelte-fp-active{background-color:#767676}.svelte-fp-slide-name{background:rgba(78,85,91,.82);border:1px #4e555b;border-radius:3px;justify-self:start;margin:2rem;order:0;padding:2px;position:absolute;text-align:center}@media only screen and (max-width:600px){.svelte-fp-indicator-list-item-btn{border-radius:.25rem;height:.5rem;width:.5rem}}</style>"],"names":[],"mappings":"AAqBO,6CAA8B,CAAC,YAAY,MAAM,CAAC,QAAQ,IAAI,CAAC,OAAO,IAAI,CAAC,QAAQ,CAAC,CAAC,iDAAkC,CAAC,WAAW,GAAG,CAAC,iBAAiB,WAAW,CAAC,OAAO,GAAG,CAAC,KAAK,CAAC,OAAO,CAAC,cAAc,KAAK,CAAC,OAAO,IAAI,CAAC,MAAM,CAAC,CAAC,MAAM,IAAI,CAAC,gCAAiB,CAAC,iBAAiB,OAAO,CAAC,oCAAqB,CAAC,WAAW,KAAK,EAAE,CAAC,EAAE,CAAC,EAAE,CAAC,GAAG,CAAC,CAAC,OAAO,GAAG,CAAC,OAAO,CAAC,cAAc,GAAG,CAAC,aAAa,KAAK,CAAC,OAAO,IAAI,CAAC,MAAM,CAAC,CAAC,QAAQ,GAAG,CAAC,SAAS,QAAQ,CAAC,WAAW,MAAM,CAAC,OAAO,IAAI,CAAC,MAAM,CAAC,GAAG,CAAC,WAAW,KAAK,CAAC,CAAC,iDAAkC,CAAC,cAAc,MAAM,CAAC,OAAO,KAAK,CAAC,MAAM,KAAK,CAAC,CAAC"}`
+};
+const Dot = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { activeSection = 0 } = $$props;
+  let { index: index2 = 0 } = $$props;
+  let { name = "" } = $$props;
+  let { names = false } = $$props;
+  if ($$props.activeSection === void 0 && $$bindings.activeSection && activeSection !== void 0)
+    $$bindings.activeSection(activeSection);
+  if ($$props.index === void 0 && $$bindings.index && index2 !== void 0)
+    $$bindings.index(index2);
+  if ($$props.name === void 0 && $$bindings.name && name !== void 0)
+    $$bindings.name(name);
+  if ($$props.names === void 0 && $$bindings.names && names !== void 0)
+    $$bindings.names(names);
+  $$result.css.add(css$4);
+  return `<li class="${"svelte-fp-indicator-list-item svelte-1ol7yt2"}">${names ? `<p class="${"svelte-fp-slide-name svelte-1ol7yt2"}">${escape(name)}</p>` : ``}
+    <button class="${"svelte-fp-indicator-list-item-btn " + escape(activeSection === index2 ? "svelte-fp-active" : "") + " svelte-1ol7yt2"}"></button>
+</li>`;
+});
+var index_svelte_svelte_type_style_lang = ".svelte-fp-indicator.svelte-natbm0{align-items:center;bottom:0;display:flex;height:inherit;justify-content:center;overflow:hidden;position:absolute;right:0;top:0;width:auto;z-index:100}.svelte-fp-indicator-list.svelte-natbm0{list-style-type:none;margin:1rem;padding:1rem}@media only screen and (max-width:600px){.svelte-fp-indicator.svelte-natbm0{width:2rem}.svelte-fp-indicator-list.svelte-natbm0{margin:.3rem;padding:.3rem}}";
+const css$3 = {
+  code: ".svelte-fp-indicator.svelte-natbm0{align-items:center;bottom:0;display:flex;height:inherit;justify-content:center;overflow:hidden;position:absolute;right:0;top:0;width:auto;z-index:100}.svelte-fp-indicator-list.svelte-natbm0{list-style-type:none;margin:1rem;padding:1rem}@media only screen and (max-width:600px){.svelte-fp-indicator.svelte-natbm0{width:2rem}.svelte-fp-indicator-list.svelte-natbm0{margin:.3rem;padding:.3rem}}",
+  map: `{"version":3,"file":"index.svelte","sources":["index.svelte"],"sourcesContent":["<script>\\n    import Dot from './Dot.svelte';\\n    export let sections = []\\n    export let activeSection = 0;\\n\\n<\/script>\\n\\n<div class=\\"svelte-fp-indicator\\">\\n    <ul class=\\"svelte-fp-indicator-list\\">\\n        {#each sections as page,index}\\n            <Dot bind:activeSection {index} name={page}/>\\n        {/each}\\n    </ul>\\n</div>\\n\\n<style>.svelte-fp-indicator{align-items:center;bottom:0;display:flex;height:inherit;justify-content:center;overflow:hidden;position:absolute;right:0;top:0;width:auto;z-index:100}.svelte-fp-indicator-list{list-style-type:none;margin:1rem;padding:1rem}@media only screen and (max-width:600px){.svelte-fp-indicator{width:2rem}.svelte-fp-indicator-list{margin:.3rem;padding:.3rem}}</style>"],"names":[],"mappings":"AAeO,kCAAoB,CAAC,YAAY,MAAM,CAAC,OAAO,CAAC,CAAC,QAAQ,IAAI,CAAC,OAAO,OAAO,CAAC,gBAAgB,MAAM,CAAC,SAAS,MAAM,CAAC,SAAS,QAAQ,CAAC,MAAM,CAAC,CAAC,IAAI,CAAC,CAAC,MAAM,IAAI,CAAC,QAAQ,GAAG,CAAC,uCAAyB,CAAC,gBAAgB,IAAI,CAAC,OAAO,IAAI,CAAC,QAAQ,IAAI,CAAC,OAAO,IAAI,CAAC,MAAM,CAAC,GAAG,CAAC,WAAW,KAAK,CAAC,CAAC,kCAAoB,CAAC,MAAM,IAAI,CAAC,uCAAyB,CAAC,OAAO,KAAK,CAAC,QAAQ,KAAK,CAAC,CAAC"}`
+};
+const Indicator = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { sections = [] } = $$props;
+  let { activeSection = 0 } = $$props;
+  if ($$props.sections === void 0 && $$bindings.sections && sections !== void 0)
+    $$bindings.sections(sections);
+  if ($$props.activeSection === void 0 && $$bindings.activeSection && activeSection !== void 0)
+    $$bindings.activeSection(activeSection);
+  $$result.css.add(css$3);
+  let $$settled;
+  let $$rendered;
+  do {
+    $$settled = true;
+    $$rendered = `<div class="${"svelte-fp-indicator svelte-natbm0"}"><ul class="${"svelte-fp-indicator-list svelte-natbm0"}">${each(sections, (page, index2) => `${validate_component(Dot, "Dot").$$render($$result, { index: index2, name: page, activeSection }, {
+      activeSection: ($$value) => {
+        activeSection = $$value;
+        $$settled = false;
+      }
+    }, {})}`)}</ul>
+</div>`;
+  } while (!$$settled);
+  return $$rendered;
+});
+const subscriber_queue = [];
+function writable(value, start = noop) {
+  let stop;
+  const subscribers = new Set();
+  function set(new_value) {
+    if (safe_not_equal(value, new_value)) {
+      value = new_value;
+      if (stop) {
+        const run_queue = !subscriber_queue.length;
+        for (const subscriber of subscribers) {
+          subscriber[1]();
+          subscriber_queue.push(subscriber, value);
+        }
+        if (run_queue) {
+          for (let i = 0; i < subscriber_queue.length; i += 2) {
+            subscriber_queue[i][0](subscriber_queue[i + 1]);
+          }
+          subscriber_queue.length = 0;
+        }
+      }
+    }
+  }
+  function update(fn) {
+    set(fn(value));
+  }
+  function subscribe2(run2, invalidate = noop) {
+    const subscriber = [run2, invalidate];
+    subscribers.add(subscriber);
+    if (subscribers.size === 1) {
+      stop = start(set) || noop;
+    }
+    run2(value);
+    return () => {
+      subscribers.delete(subscriber);
+      if (subscribers.size === 0) {
+        stop();
+        stop = null;
+      }
+    };
+  }
+  return { set, update, subscribe: subscribe2 };
+}
+var Fullpage_svelte_svelte_type_style_lang = ".svelte-fp-wrapper.svelte-178utfb{bottom:0;height:100%;left:0;overflow:hidden;position:absolute;right:0;top:0;width:100%}.svelte-fp-container.svelte-178utfb{height:inherit;position:relative;width:inherit}.svelte-fp-disable-pull-refresh.svelte-178utfb{-ms-scroll-chaining:none;overscroll-behavior:contain}";
+const css$2 = {
+  code: ".svelte-fp-wrapper.svelte-178utfb{bottom:0;height:100%;left:0;overflow:hidden;position:absolute;right:0;top:0;width:100%}.svelte-fp-container.svelte-178utfb{height:inherit;position:relative;width:inherit}.svelte-fp-disable-pull-refresh.svelte-178utfb{-ms-scroll-chaining:none;overscroll-behavior:contain}",
+  map: `{"version":3,"file":"Fullpage.svelte","sources":["Fullpage.svelte"],"sourcesContent":["<script>\\n    import Indicator from './Indicator/index.svelte';\\n    import {onMount, setContext} from \\"svelte\\";\\n    import {writable} from \\"svelte/store\\";\\n    //defining variable that will hold class value, that will be passed into this component's wrapper\\n    let defaultClasses = '';\\n\\n    //exporting classes, for passing classes into wrapper\\n    export {defaultClasses as class};\\n    export let style = '';\\n    //number that hold which section is active\\n    export let activeSection = 0;\\n    const activeSectionStore = writable(activeSection)\\n    let sectionCount = 0;\\n    // Optional array of strings containing section titles, also count of section is calculated by length of this array\\n    export let sectionTitles = false;\\n    let sections = [];\\n    // duration of animation and scroll cooldown in milliseconds\\n    export let transitionDuration = 500;\\n    // enables scrolling using arrows\\n    export let arrows = false;\\n    // enables scrolling using drag\\n    export let drag = false;\\n    /*\\n    Distance in px, if values from events emitted by user behavior exceed this thresholds, function for handling drag (by\\n    cursor) or touch will be triggered.\\n     */\\n    export let dragThreshold = 100;\\n    export let touchThreshold = 75;\\n    export let pullDownToRefresh = false;\\n\\n    // Placeholder for content of slot\\n    let fullpageContent;\\n\\n    // Auxiliary variables that make possible drag and scroll feature\\n    let dragStartPosition;\\n    let touchStartPosition;\\n\\n    //extending exported classes with wrapper class\\n    let classes = \`\${defaultClasses} svelte-fp-wrapper\`;\\n    let recentScroll = 0;\\n    //setting section visible\\n    let active = true;\\n\\n    /*\\n    Passing data about section visibility to all sections, activeSectionStore notifies all child FullpageSections about\\n    changed active section, so previously active section will hide and newly active section will appear. Function getId\\n    is for determination sectionId for FullpageSection\\n     */\\n    setContext('section', {\\n        activeSectionStore,\\n        getId: ()=>{\\n            sectionCount++;\\n            return sectionCount-1;\\n        }\\n    })\\n\\n    //function that handles scroll and sets scroll cooldown based on animation duration\\n    const handleScroll = (event) => {\\n        //getting direction of scroll, if negative, scroll up, if positive, scroll down\\n        let deltaY = event.deltaY;\\n        let timer = new Date().getTime();\\n        //if cooldown time is up, fullpage is scrollable again\\n        if (transitionDuration < timer-recentScroll) {\\n            recentScroll = timer;\\n            if (deltaY < 0) {\\n                scrollUp()\\n            } else if (deltaY > 0) {\\n                scrollDown()\\n            }\\n        }\\n    };\\n    // toggles visibility of active section\\n    const toggleActive = () => {\\n        active = !active;\\n    };\\n    // scroll up effect, only when it's possible\\n    const scrollUp = async () => {\\n        if ($activeSectionStore > 0){\\n            activeSection--;\\n        }\\n    };\\n    // scroll down effect, only when it's possible\\n    const scrollDown = async () => {\\n        if ($activeSectionStore < sectionCount-1){\\n            activeSection++;\\n        }\\n    };\\n    // handling arrow event\\n    const handleKey = (event) => {\\n        if (arrows) {\\n            switch (event.key) {\\n                case 'ArrowDown':\\n                    scrollDown();\\n                    break;\\n                case 'ArrowUp':\\n                    scrollUp();\\n                    break;\\n            }\\n        }\\n    };\\n    // memoize drag start Y coordinate, only if drag effect is enabled\\n    const handleDragStart = (event) => {\\n        if (drag) {\\n            dragStartPosition = event.screenY;\\n        }\\n    };\\n    // handles drag end event\\n    const handleDragEnd = (event) => {\\n        if (drag) {\\n            const dragEndPosition = event.screenY;\\n            // Trigger scroll event after thresholds are exceeded\\n            if (dragStartPosition - dragEndPosition > dragThreshold) {\\n                scrollDown();\\n            } else if (dragStartPosition - dragEndPosition < -dragThreshold) {\\n                scrollUp()\\n            }\\n        }\\n    };\\n    // memoize touch start Y coordinate\\n    const handleTouchStart = (event) => {\\n        touchStartPosition = event.touches[0].screenY;\\n    };\\n    // Compare touch start and end Y coordinates, if difference exceeds threshold, scroll function is triggered\\n    const handleTouchEnd = (event) => {\\n        // Timer is used for preventing scrolling multiple sections\\n        let timer = new Date().getTime();\\n        const touchEndPosition = event.touches[0].screenY;\\n        if (transitionDuration < timer-recentScroll) {\\n            if (touchStartPosition - touchEndPosition > touchThreshold) {\\n                scrollDown();\\n                recentScroll = timer;\\n            } else if (touchStartPosition - touchEndPosition < -touchThreshold) {\\n                scrollUp();\\n                recentScroll = timer;\\n            }\\n        }\\n    };\\n\\n\\n    /*\\n    Everytime activeSection updates, this store gets new value and then all sections that subscribe,\\n    this is because user may want to control sections programmatically\\n     */\\n    $: activeSectionStore.set(activeSection)\\n\\n    // If user has specified sectionTitles, then sections is overridden\\n    $: if (sectionTitles) sections = sectionTitles;\\n\\n    // If user hasn't specified sectionTitle, sections array will be generated with placeholder strings\\n    $: if (fullpageContent && !sectionTitles) {\\n        console.log(fullpageContent.children.length)\\n        for (let i = 0; sectionCount > i; i++) {\\n            sections = [\\n                ...sections,\\n                \`Section \${i+1}\`\\n            ];\\n        }\\n    }\\n<\/script>\\n\\n<svelte:window on:keydown={ (event)=>handleKey(event) }/> <!-- Necessity when listening to window events -->\\n<svelte:body class:svelte-fp-disable-pull-refresh={pullDownToRefresh}/> <!-- disables slideDownToRefresh feature -->\\n\\n\\n<div class={classes} style={style} on:wheel={ (event)=>handleScroll(event) } on:touchstart={ (event)=>handleTouchStart(event) }\\n     on:touchmove={ (event)=>handleTouchEnd(event) } on:drag={ ()=>{return false} }\\n     on:mousedown={ (event)=>handleDragStart(event) } on:mouseup={ (event)=>handleDragEnd(event) }>\\n    <div class=\\"svelte-fp-container\\">\\n        <div bind:this={fullpageContent} class=\\"svelte-fp-container\\">\\n            <slot />\\n        </div>\\n        <Indicator bind:activeSection bind:sections/>\\n    </div>\\n</div>\\n\\n<style>.svelte-fp-wrapper{bottom:0;height:100%;left:0;overflow:hidden;position:absolute;right:0;top:0;width:100%}.svelte-fp-container{height:inherit;position:relative;width:inherit}.svelte-fp-disable-pull-refresh{-ms-scroll-chaining:none;overscroll-behavior:contain}</style>"],"names":[],"mappings":"AAgLO,iCAAkB,CAAC,OAAO,CAAC,CAAC,OAAO,IAAI,CAAC,KAAK,CAAC,CAAC,SAAS,MAAM,CAAC,SAAS,QAAQ,CAAC,MAAM,CAAC,CAAC,IAAI,CAAC,CAAC,MAAM,IAAI,CAAC,mCAAoB,CAAC,OAAO,OAAO,CAAC,SAAS,QAAQ,CAAC,MAAM,OAAO,CAAC,8CAA+B,CAAC,oBAAoB,IAAI,CAAC,oBAAoB,OAAO,CAAC"}`
+};
+const Fullpage = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $$unsubscribe_activeSectionStore;
+  let { class: defaultClasses = "" } = $$props;
+  let { style = "" } = $$props;
+  let { activeSection = 0 } = $$props;
+  const activeSectionStore = writable(activeSection);
+  $$unsubscribe_activeSectionStore = subscribe(activeSectionStore, (value) => value);
+  let sectionCount = 0;
+  let { sectionTitles = false } = $$props;
+  let sections = [];
+  let { transitionDuration = 500 } = $$props;
+  let { arrows = false } = $$props;
+  let { drag = false } = $$props;
+  let { dragThreshold = 100 } = $$props;
+  let { touchThreshold = 75 } = $$props;
+  let { pullDownToRefresh = false } = $$props;
+  let fullpageContent;
+  let classes = `${defaultClasses} svelte-fp-wrapper`;
+  setContext("section", {
+    activeSectionStore,
+    getId: () => {
+      sectionCount++;
+      return sectionCount - 1;
+    }
+  });
+  if ($$props.class === void 0 && $$bindings.class && defaultClasses !== void 0)
+    $$bindings.class(defaultClasses);
+  if ($$props.style === void 0 && $$bindings.style && style !== void 0)
+    $$bindings.style(style);
+  if ($$props.activeSection === void 0 && $$bindings.activeSection && activeSection !== void 0)
+    $$bindings.activeSection(activeSection);
+  if ($$props.sectionTitles === void 0 && $$bindings.sectionTitles && sectionTitles !== void 0)
+    $$bindings.sectionTitles(sectionTitles);
+  if ($$props.transitionDuration === void 0 && $$bindings.transitionDuration && transitionDuration !== void 0)
+    $$bindings.transitionDuration(transitionDuration);
+  if ($$props.arrows === void 0 && $$bindings.arrows && arrows !== void 0)
+    $$bindings.arrows(arrows);
+  if ($$props.drag === void 0 && $$bindings.drag && drag !== void 0)
+    $$bindings.drag(drag);
+  if ($$props.dragThreshold === void 0 && $$bindings.dragThreshold && dragThreshold !== void 0)
+    $$bindings.dragThreshold(dragThreshold);
+  if ($$props.touchThreshold === void 0 && $$bindings.touchThreshold && touchThreshold !== void 0)
+    $$bindings.touchThreshold(touchThreshold);
+  if ($$props.pullDownToRefresh === void 0 && $$bindings.pullDownToRefresh && pullDownToRefresh !== void 0)
+    $$bindings.pullDownToRefresh(pullDownToRefresh);
+  $$result.css.add(css$2);
+  let $$settled;
+  let $$rendered;
+  do {
+    $$settled = true;
+    {
+      activeSectionStore.set(activeSection);
+    }
+    {
+      if (sectionTitles)
+        sections = sectionTitles;
+    }
+    $$rendered = ` 
+ 
+
+
+<div class="${escape(null_to_empty(classes)) + " svelte-178utfb"}"${add_attribute("style", style, 0)}><div class="${"svelte-fp-container svelte-178utfb"}"><div class="${"svelte-fp-container svelte-178utfb"}"${add_attribute("this", fullpageContent, 0)}>${slots.default ? slots.default({}) : ``}</div>
+        ${validate_component(Indicator, "Indicator").$$render($$result, { activeSection, sections }, {
+      activeSection: ($$value) => {
+        activeSection = $$value;
+        $$settled = false;
+      },
+      sections: ($$value) => {
+        sections = $$value;
+        $$settled = false;
+      }
+    }, {})}</div>
+</div>`;
+  } while (!$$settled);
+  $$unsubscribe_activeSectionStore();
+  return $$rendered;
+});
+var FullpageSection_svelte_svelte_type_style_lang = "section.svelte-1z03ymt{height:inherit;position:relative}.svelte-fp-flexbox-expand.svelte-1z03ymt{flex:1}.svelte-fp-container.svelte-1z03ymt{height:inherit;position:relative;width:inherit}.svelte-fp-flexbox-center.svelte-1z03ymt{align-items:center;display:flex;justify-content:center}.svelte-fp-unselectable.svelte-1z03ymt{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.svelte-fp-indicator-horizontal.svelte-1z03ymt{align-items:center;bottom:0;display:flex;height:5rem;justify-content:center;left:0;overflow:hidden;position:absolute;right:0;width:inherit}.svelte-fp-indicator-list-horizontal.svelte-1z03ymt{list-style-type:none;margin:1rem;padding:1rem}.svelte-fp-indicator-list-item.svelte-1z03ymt{display:inline-block;margin:1rem;padding:0}.svelte-fp-indicator-list-item-btn.svelte-1z03ymt{background-color:transparent;border:1px solid #767676;border-radius:.5rem;height:1rem;width:1rem}.svelte-fp-active.svelte-1z03ymt{background-color:#767676}";
+const css$1 = {
+  code: "section.svelte-1z03ymt{height:inherit;position:relative}.svelte-fp-flexbox-expand.svelte-1z03ymt{flex:1}.svelte-fp-container.svelte-1z03ymt{height:inherit;position:relative;width:inherit}.svelte-fp-flexbox-center.svelte-1z03ymt{align-items:center;display:flex;justify-content:center}.svelte-fp-unselectable.svelte-1z03ymt{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.svelte-fp-indicator-horizontal.svelte-1z03ymt{align-items:center;bottom:0;display:flex;height:5rem;justify-content:center;left:0;overflow:hidden;position:absolute;right:0;width:inherit}.svelte-fp-indicator-list-horizontal.svelte-1z03ymt{list-style-type:none;margin:1rem;padding:1rem}.svelte-fp-indicator-list-item.svelte-1z03ymt{display:inline-block;margin:1rem;padding:0}.svelte-fp-indicator-list-item-btn.svelte-1z03ymt{background-color:transparent;border:1px solid #767676;border-radius:.5rem;height:1rem;width:1rem}.svelte-fp-active.svelte-1z03ymt{background-color:#767676}",
+  map: `{"version":3,"file":"FullpageSection.svelte","sources":["FullpageSection.svelte"],"sourcesContent":["<script>\\n    import {slide} from 'svelte/transition';\\n    import {getContext, onMount, setContext} from \\"svelte\\";\\n    import { writable } from \\"svelte/store\\";\\n\\n    let defaultClasses = '';\\n\\n    export { defaultClasses as class };\\n    export let style = '';\\n    let sectionId;\\n    const { getId, activeSectionStore} = getContext('section');\\n    export let slides = [];\\n    export let activeSlide = 0;\\n    const activeSlideStore = writable(activeSlide);\\n    export let center = false;\\n    export let arrows = false;\\n    export let select = false;\\n    export let transitionDuration = 500;\\n    export let dragThreshold = 100;\\n    export let touchThreshold = 75;\\n    export let transition = {\\n        duration: transitionDuration\\n    };\\n    sectionId = parseInt(sectionId);\\n    let visible;\\n\\n    let activeSlideIndicator = activeSlide;\\n    let dragStartPosition;\\n    let touchStartPosition;\\n    let recentSlide = 0;\\n    let slideCount = 0;\\n\\n    let classes = \`\${defaultClasses} svelte-fp-section svelte-fp-flexbox-center\`;\\n\\n    if (!select) {\\n        classes = \`\${classes} svelte-fp-unselectable\`\\n    }\\n\\n    // Passing data about slide visibility to all slides, same principle as setContext('section',{...}) in Fullpage.svelte\\n    setContext('slide', {\\n        activeSlideStore,\\n        getId: ()=>{\\n            slideCount++;\\n            return slideCount-1;\\n        }\\n    })\\n\\n    const makePositive = (num) => {\\n        let negative = false;\\n        if (num < 0) {\\n            negative = true;\\n            num = -num;\\n        }\\n        return {num, negative};\\n    };\\n\\n    const handleSelect = () => {\\n        if (!select) {\\n            return false;\\n        }\\n    };\\n\\n    const slideRight = () => {\\n        const active = makePositive($activeSlideStore);\\n        if (active.num < slides.length-1){\\n            activeSlideIndicator = active.num+1;\\n            activeSlideStore.set(-(activeSlideIndicator));\\n        } else {\\n            activeSlideStore.set(0)\\n            activeSlideIndicator = $activeSlideStore;\\n        }\\n    };\\n\\n    const slideLeft = () => {\\n        const active = makePositive($activeSlideStore);\\n        if (active.num > 0) {\\n            activeSlideStore.set(active.num-1);\\n        } else {\\n            activeSlideStore.set(slides.length-1);\\n        }\\n        activeSlideIndicator = $activeSlideStore;\\n    };\\n\\n    const toSlide = (slideId) => {\\n        if (slideId > activeSlideIndicator) {\\n            while (slideId > activeSlideIndicator) {\\n                slideRight()\\n            }\\n        } else {\\n            while (slideId < activeSlideIndicator) {\\n                slideLeft()\\n            }\\n        }\\n    };\\n\\n    // handling arrow event\\n    const handleKey = (event) => {\\n        if (arrows) {\\n            switch (event.key) {\\n                case 'ArrowLeft':\\n                    slideLeft();\\n                    break;\\n                case 'ArrowRight':\\n                    slideRight();\\n                    break;\\n            }\\n        }\\n    };\\n\\n    // memoize drag start X coordinate\\n    const handleDragStart = (event) => {\\n        dragStartPosition = event.screenX;\\n    };\\n    // handles drag end event\\n    const handleDragEnd = (event) => {\\n        const dragEndPosition = event.screenX;\\n        // Trigger scroll event after thresholds are exceeded\\n        if (dragStartPosition - dragEndPosition > dragThreshold) {\\n            slideRight();\\n        } else if (dragStartPosition - dragEndPosition < -dragThreshold) {\\n            slideLeft()\\n        }\\n    };\\n\\n    // memoize touch start X coordinate\\n    const handleTouchStart = (event) => {\\n        touchStartPosition = event.touches[0].screenX;\\n    };\\n    // Compare touch start and end X coordinates, if difference exceeds threshold, scroll function is triggered\\n    const handleTouchEnd = (event) => {\\n        // Timer is used for preventing scrolling multiple slides\\n        let timer = new Date().getTime();\\n        const touchEndPosition = event.touches[0].screenX;\\n        if (transitionDuration < timer-recentSlide) {\\n            if (touchStartPosition - touchEndPosition > touchThreshold) {\\n                slideRight();\\n                recentSlide = timer;\\n            } else if (touchStartPosition - touchEndPosition < -touchThreshold) {\\n                slideLeft();\\n                recentSlide = timer;\\n            }\\n        }\\n    };\\n\\n    // Recompute visible: boolean everytime one of dependencies change\\n    $: visible = (sectionId === $activeSectionStore);\\n\\n    /*\\n    Everytime activeSlide updates, this store gets new value and then all slides that subscribe,\\n    this is because user may want to control slides programmatically\\n     */\\n    $: activeSlideStore.set(activeSlide)\\n\\n    // After DOM is ready ged sectionId\\n    onMount(()=>{\\n        sectionId = getId()\\n    })\\n    // Everytime section disappears, slide count resets, this prevents slides from getting wrong ID\\n    $: if (!visible) {\\n        slideCount = 0;\\n    }\\n<\/script>\\n\\n<svelte:window on:keydown={ (event)=>handleKey(event) }/>\\n\\n{#if visible}\\n    <section transition:slide={transition} class={classes} style={style} on:selectstart={handleSelect}\\n             on:mousedown={ (event)=>handleDragStart(event) } on:mouseup={ (event)=>handleDragEnd(event) }\\n            on:touchstart={ (event)=>handleTouchStart(event) } on:touchmove={ (event)=>handleTouchEnd(event) }>\\n        <div class=\\"svelte-fp-container svelte-fp-flexbox-expand\\" class:svelte-fp-flexbox-center={center}>\\n            <slot>\\n            </slot>\\n        </div>\\n        {#if slides[0]}\\n            <div class=\\"svelte-fp-indicator-horizontal\\">\\n                <ul class=\\"svelte-fp-indicator-list-horizontal\\">\\n                    {#each slides as page,index}\\n                        <li class=\\"svelte-fp-indicator-list-item\\">\\n                            <button class=\\"svelte-fp-indicator-list-item-btn {activeSlideIndicator === index ? 'svelte-fp-active':''}\\" on:click={ ()=>toSlide(index) }></button>\\n                        </li>\\n                    {/each}\\n                </ul>\\n            </div>\\n        {/if}\\n    </section>\\n{/if}\\n\\n<style>section{height:inherit;position:relative}.svelte-fp-flexbox-expand{flex:1}.svelte-fp-container{height:inherit;position:relative;width:inherit}.svelte-fp-flexbox-center{align-items:center;display:flex;justify-content:center}.svelte-fp-unselectable{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.svelte-fp-indicator-horizontal{align-items:center;bottom:0;display:flex;height:5rem;justify-content:center;left:0;overflow:hidden;position:absolute;right:0;width:inherit}.svelte-fp-indicator-list-horizontal{list-style-type:none;margin:1rem;padding:1rem}.svelte-fp-indicator-list-item{display:inline-block;margin:1rem;padding:0}.svelte-fp-indicator-list-item-btn{background-color:transparent;border:1px solid #767676;border-radius:.5rem;height:1rem;width:1rem}.svelte-fp-active{background-color:#767676}</style>"],"names":[],"mappings":"AA2LO,sBAAO,CAAC,OAAO,OAAO,CAAC,SAAS,QAAQ,CAAC,wCAAyB,CAAC,KAAK,CAAC,CAAC,mCAAoB,CAAC,OAAO,OAAO,CAAC,SAAS,QAAQ,CAAC,MAAM,OAAO,CAAC,wCAAyB,CAAC,YAAY,MAAM,CAAC,QAAQ,IAAI,CAAC,gBAAgB,MAAM,CAAC,sCAAuB,CAAC,oBAAoB,IAAI,CAAC,iBAAiB,IAAI,CAAC,gBAAgB,IAAI,CAAC,YAAY,IAAI,CAAC,8CAA+B,CAAC,YAAY,MAAM,CAAC,OAAO,CAAC,CAAC,QAAQ,IAAI,CAAC,OAAO,IAAI,CAAC,gBAAgB,MAAM,CAAC,KAAK,CAAC,CAAC,SAAS,MAAM,CAAC,SAAS,QAAQ,CAAC,MAAM,CAAC,CAAC,MAAM,OAAO,CAAC,mDAAoC,CAAC,gBAAgB,IAAI,CAAC,OAAO,IAAI,CAAC,QAAQ,IAAI,CAAC,6CAA8B,CAAC,QAAQ,YAAY,CAAC,OAAO,IAAI,CAAC,QAAQ,CAAC,CAAC,iDAAkC,CAAC,iBAAiB,WAAW,CAAC,OAAO,GAAG,CAAC,KAAK,CAAC,OAAO,CAAC,cAAc,KAAK,CAAC,OAAO,IAAI,CAAC,MAAM,IAAI,CAAC,gCAAiB,CAAC,iBAAiB,OAAO,CAAC"}`
+};
+const FullpageSection = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $activeSectionStore, $$unsubscribe_activeSectionStore;
+  let $$unsubscribe_activeSlideStore;
+  let { class: defaultClasses = "" } = $$props;
+  let { style = "" } = $$props;
+  let sectionId;
+  const { getId, activeSectionStore } = getContext("section");
+  $$unsubscribe_activeSectionStore = subscribe(activeSectionStore, (value) => $activeSectionStore = value);
+  let { slides = [] } = $$props;
+  let { activeSlide = 0 } = $$props;
+  const activeSlideStore = writable(activeSlide);
+  $$unsubscribe_activeSlideStore = subscribe(activeSlideStore, (value) => value);
+  let { center = false } = $$props;
+  let { arrows = false } = $$props;
+  let { select = false } = $$props;
+  let { transitionDuration = 500 } = $$props;
+  let { dragThreshold = 100 } = $$props;
+  let { touchThreshold = 75 } = $$props;
+  let { transition = { duration: transitionDuration } } = $$props;
+  sectionId = parseInt(sectionId);
+  let visible;
+  let activeSlideIndicator = activeSlide;
+  let slideCount = 0;
+  let classes = `${defaultClasses} svelte-fp-section svelte-fp-flexbox-center`;
+  if (!select) {
+    classes = `${classes} svelte-fp-unselectable`;
+  }
+  setContext("slide", {
+    activeSlideStore,
+    getId: () => {
+      slideCount++;
+      return slideCount - 1;
+    }
+  });
+  if ($$props.class === void 0 && $$bindings.class && defaultClasses !== void 0)
+    $$bindings.class(defaultClasses);
+  if ($$props.style === void 0 && $$bindings.style && style !== void 0)
+    $$bindings.style(style);
+  if ($$props.slides === void 0 && $$bindings.slides && slides !== void 0)
+    $$bindings.slides(slides);
+  if ($$props.activeSlide === void 0 && $$bindings.activeSlide && activeSlide !== void 0)
+    $$bindings.activeSlide(activeSlide);
+  if ($$props.center === void 0 && $$bindings.center && center !== void 0)
+    $$bindings.center(center);
+  if ($$props.arrows === void 0 && $$bindings.arrows && arrows !== void 0)
+    $$bindings.arrows(arrows);
+  if ($$props.select === void 0 && $$bindings.select && select !== void 0)
+    $$bindings.select(select);
+  if ($$props.transitionDuration === void 0 && $$bindings.transitionDuration && transitionDuration !== void 0)
+    $$bindings.transitionDuration(transitionDuration);
+  if ($$props.dragThreshold === void 0 && $$bindings.dragThreshold && dragThreshold !== void 0)
+    $$bindings.dragThreshold(dragThreshold);
+  if ($$props.touchThreshold === void 0 && $$bindings.touchThreshold && touchThreshold !== void 0)
+    $$bindings.touchThreshold(touchThreshold);
+  if ($$props.transition === void 0 && $$bindings.transition && transition !== void 0)
+    $$bindings.transition(transition);
+  $$result.css.add(css$1);
+  visible = sectionId === $activeSectionStore;
+  {
+    activeSlideStore.set(activeSlide);
+  }
+  {
+    if (!visible) {
+      slideCount = 0;
+    }
+  }
+  $$unsubscribe_activeSectionStore();
+  $$unsubscribe_activeSlideStore();
+  return `
+
+${visible ? `<section class="${escape(null_to_empty(classes)) + " svelte-1z03ymt"}"${add_attribute("style", style, 0)}><div class="${[
+    "svelte-fp-container svelte-fp-flexbox-expand svelte-1z03ymt",
+    center ? "svelte-fp-flexbox-center" : ""
+  ].join(" ").trim()}">${slots.default ? slots.default({}) : `
+            `}</div>
+        ${slides[0] ? `<div class="${"svelte-fp-indicator-horizontal svelte-1z03ymt"}"><ul class="${"svelte-fp-indicator-list-horizontal svelte-1z03ymt"}">${each(slides, (page, index2) => `<li class="${"svelte-fp-indicator-list-item svelte-1z03ymt"}"><button class="${"svelte-fp-indicator-list-item-btn " + escape(activeSlideIndicator === index2 ? "svelte-fp-active" : "") + " svelte-1z03ymt"}"></button>
+                        </li>`)}</ul></div>` : ``}</section>` : ``}`;
+});
+var FullpageSlide_svelte_svelte_type_style_lang = ".svelte-fp-content.svelte-1o3vu8r{bottom:0;height:inherit;left:0;position:absolute;right:0;top:0;width:inherit}.svelte-fp-flexbox-center.svelte-1o3vu8r{align-items:center;display:flex;justify-content:center}";
+const css = {
+  code: ".svelte-fp-content.svelte-1o3vu8r{bottom:0;height:inherit;left:0;position:absolute;right:0;top:0;width:inherit}.svelte-fp-flexbox-center.svelte-1o3vu8r{align-items:center;display:flex;justify-content:center}",
+  map: `{"version":3,"file":"FullpageSlide.svelte","sources":["FullpageSlide.svelte"],"sourcesContent":["<script>\\n    import {fly} from 'svelte/transition'\\n    import {getContext, onMount} from \\"svelte\\";\\n\\n    let defaultClasses = '';\\n    export { defaultClasses as class };\\n    export let style = '';\\n    let slideId = 0;\\n    let activeSlide = 0;\\n    const { activeSlideStore, getId } = getContext('slide')\\n    export let center = false;\\n    export let transitionIn = {\\n        duration: 500,\\n        x: -2000\\n    };\\n    export let transitionOut = {\\n        duration: 500,\\n        x: 2000\\n    };\\n\\n    const makePositive = (num) => {\\n        let negative = false;\\n        if (num < 0) {\\n            negative = true;\\n            num = -num;\\n        }\\n        return {num, negative};\\n    };\\n\\n    const correctAnimation = (active) => {\\n        const state = makePositive(active);\\n        // Sets animation direction based on scroll/drag/arrow direction\\n        if (state.negative) {\\n            transitionIn.x = 2000;\\n            transitionOut.x = -2000;\\n        } else {\\n            transitionIn.x = -2000;\\n            transitionOut.x = 2000;\\n        }\\n        activeSlide = state.num;\\n    }\\n\\n    // When activeSlide value changes, activeSlideStore value updates\\n    $: activeSlideStore.set(activeSlide)\\n\\n    // When activeSlideStore value changes, recompute transitions and change activeSlide\\n    $: correctAnimation($activeSlideStore)\\n\\n    // After DOM is ready ged slideId\\n    onMount(()=>{\\n        slideId = getId()\\n    })\\n<\/script>\\n\\n{#if slideId === activeSlide}\\n    <div class={\`\${defaultClasses} svelte-fp-content\`} style={style} in:fly={transitionIn} out:fly={transitionOut} class:svelte-fp-flexbox-center={center}>\\n        <slot>\\n        </slot>\\n    </div>\\n{/if}\\n\\n<style>.svelte-fp-content{bottom:0;height:inherit;left:0;position:absolute;right:0;top:0;width:inherit}.svelte-fp-flexbox-center{align-items:center;display:flex;justify-content:center}</style>"],"names":[],"mappings":"AA6DO,iCAAkB,CAAC,OAAO,CAAC,CAAC,OAAO,OAAO,CAAC,KAAK,CAAC,CAAC,SAAS,QAAQ,CAAC,MAAM,CAAC,CAAC,IAAI,CAAC,CAAC,MAAM,OAAO,CAAC,wCAAyB,CAAC,YAAY,MAAM,CAAC,QAAQ,IAAI,CAAC,gBAAgB,MAAM,CAAC"}`
+};
+const FullpageSlide = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $activeSlideStore, $$unsubscribe_activeSlideStore;
+  let { class: defaultClasses = "" } = $$props;
+  let { style = "" } = $$props;
+  let slideId = 0;
+  let activeSlide = 0;
+  const { activeSlideStore, getId } = getContext("slide");
+  $$unsubscribe_activeSlideStore = subscribe(activeSlideStore, (value) => $activeSlideStore = value);
+  let { center = false } = $$props;
+  let { transitionIn = { duration: 500, x: -2e3 } } = $$props;
+  let { transitionOut = { duration: 500, x: 2e3 } } = $$props;
+  const makePositive = (num) => {
+    let negative = false;
+    if (num < 0) {
+      negative = true;
+      num = -num;
+    }
+    return { num, negative };
+  };
+  const correctAnimation = (active) => {
+    const state = makePositive(active);
+    if (state.negative) {
+      transitionIn.x = 2e3;
+      transitionOut.x = -2e3;
+    } else {
+      transitionIn.x = -2e3;
+      transitionOut.x = 2e3;
+    }
+    activeSlide = state.num;
+  };
+  if ($$props.class === void 0 && $$bindings.class && defaultClasses !== void 0)
+    $$bindings.class(defaultClasses);
+  if ($$props.style === void 0 && $$bindings.style && style !== void 0)
+    $$bindings.style(style);
+  if ($$props.center === void 0 && $$bindings.center && center !== void 0)
+    $$bindings.center(center);
+  if ($$props.transitionIn === void 0 && $$bindings.transitionIn && transitionIn !== void 0)
+    $$bindings.transitionIn(transitionIn);
+  if ($$props.transitionOut === void 0 && $$bindings.transitionOut && transitionOut !== void 0)
+    $$bindings.transitionOut(transitionOut);
+  $$result.css.add(css);
+  {
+    activeSlideStore.set(activeSlide);
+  }
+  {
+    correctAnimation($activeSlideStore);
+  }
+  $$unsubscribe_activeSlideStore();
+  return `${slideId === activeSlide ? `<div class="${[
+    escape(null_to_empty(`${defaultClasses} svelte-fp-content`)) + " svelte-1o3vu8r",
+    center ? "svelte-fp-flexbox-center" : ""
+  ].join(" ").trim()}"${add_attribute("style", style, 0)}>${slots.default ? slots.default({}) : `
+        `}</div>` : ``}`;
+});
+const Routes = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  const sections = ["Home", "History", "Present", "Next"];
+  let activeSection = 0;
+  let $$settled;
+  let $$rendered;
+  do {
+    $$settled = true;
+    $$rendered = `${validate_component(Fullpage, "Fullpage").$$render($$result, {
+      arrows: true,
+      drag: true,
+      sectionTitles: sections,
+      activeSection
+    }, {
+      activeSection: ($$value) => {
+        activeSection = $$value;
+        $$settled = false;
+      }
+    }, {
+      default: () => `
+  ${validate_component(FullpageSection, "FullpageSection").$$render($$result, { slides: [], transitionDuration: 800 }, {}, {
+        default: () => `<section style="${"background: url('/plutusbg.png'); background-position: center; background-repeat: no-repeat; background-size: cover;"}" class="${"text-gray-300 min-h-screen bg-supadark-dark"}"><div class="${"flex flex-col items-center px-5 py-16 mx-auto md:flex-row lg:px-28 "}"><div class="${"flex flex-col mt-24 items-start w-full pt-0 mb-16 text-left lg:flex-grow md:w-1/2 xl:mr-20 md:pr-24 md:mb-0 "}"><h1 class="${"mb-8 font-commorant uppercase text-2xl font-bold text-left text-white lg:text-8xl"}">Funding for Society&#39;s Superheroes
+          </h1>
+
+          <div class="${"items-start text-lg"}">${validate_component(Sbutton, "Sbutton").$$render($$result, {}, {}, { default: () => `Help a Superhero` })}</div></div>
+        <div class="${"w-full lg:w-5/6 lg:max-w-xl md:w-1/2 static"}"></div></div></section>`
+      })}
+  ${validate_component(FullpageSection, "FullpageSection").$$render($$result, { slides: [], transitionDuration: 800 }, {}, {
+        default: () => `${validate_component(FullpageSlide, "FullpageSlide").$$render($$result, {}, {}, {
+          default: () => `${validate_component(Section1, "Section1").$$render($$result, {}, {}, {})}`
+        })}`
+      })}
+  ${validate_component(FullpageSection, "FullpageSection").$$render($$result, { slides: [], transitionDuration: 800 }, {}, {
+        default: () => `${validate_component(FullpageSlide, "FullpageSlide").$$render($$result, {}, {}, {
+          default: () => `${validate_component(Section2, "Section2").$$render($$result, {}, {}, {})}`
+        })}`
+      })}
+
+  ${validate_component(FullpageSection, "FullpageSection").$$render($$result, { slides: [], transitionDuration: 800 }, {}, {
+        default: () => `${validate_component(Section4, "Section4").$$render($$result, {}, {}, {})}`
+      })}
+  
+
+  `
+    })}`;
+  } while (!$$settled);
+  return $$rendered;
+});
+var index$2 = /* @__PURE__ */ Object.freeze({
+  __proto__: null,
+  [Symbol.toStringTag]: "Module",
+  "default": Routes
+});
+const Governance = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return `<div class="${"text-white font-bold text-4xl h-screen flex justify-center items-center"}">Coming Soon
+</div>`;
+});
+var index$1 = /* @__PURE__ */ Object.freeze({
+  __proto__: null,
+  [Symbol.toStringTag]: "Module",
+  "default": Governance
+});
+const Subsection = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return `<div class="${"w-full h-44 bg-supagreen-dark grid text-supadark grid-cols-12"}"><div class="${"col-span-4 text-center my-auto"}"><p class="${"text-2xl font-bold"}">Funded Projects</p>
+        <p>0</p></div>
+    <div class="${"col-span-4 text-center my-auto"}"><p class="${"text-2xl font-bold"}">Total Funding Value</p>
+        <p>0</p></div>
+    <div class="${"col-span-4 text-center my-auto"}"><p class="${"text-2xl font-bold"}">Treasury Value</p>
+        <p>0</p></div></div>`;
+});
+var subsection = /* @__PURE__ */ Object.freeze({
+  __proto__: null,
+  [Symbol.toStringTag]: "Module",
+  "default": Subsection
+});
+const Protocol = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return `<section><div class="${"container px-6 py-16 mx-auto text-center"}"><div class="${"max-w-lg mx-auto"}"><h1 class="${"text-3xl font-bold text-white dark:text-white md:text-4xl"}">Grow the Ecosystem</h1>
+                <p class="${"mt-6 text-gray-400 dark:text-gray-300"}">Join together hand-to-hand to build a better system for the people. Grow the superhero community to help others in need.</p>
+                <div class="${"max-w-sm mt-4 mx-auto"}">${validate_component(Sbutton, "Sbutton").$$render($$result, {}, {}, { default: () => `Get started` })}</div>
+                <p class="${"mt-3 text-sm text-gray-400 "}">Open source protocol</p></div>
+    
+            </div></section>`;
+});
+var index = /* @__PURE__ */ Object.freeze({
+  __proto__: null,
+  [Symbol.toStringTag]: "Module",
+  "default": Protocol
 });
 const Section3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `<section class="${"section min-h-screen"}"><h1 data-aos="${"fade-up"}" class="${"text-gray-50 text-4xl font-athelas max-w-2xl text-center font-bold mx-auto"}">Supported By the Best Technologies</h1>
@@ -1668,62 +2110,5 @@ var section3 = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   [Symbol.toStringTag]: "Module",
   "default": Section3
-});
-const Section4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<section style="${"background: url('https://ik.imagekit.io/1irdz9lsyrw/themis_5Sr3KeOxD.png?updatedAt=1638371193203');"}" class="${"section min-h-screen flex"}"><div class="${"mx-auto my-auto text-supadark-light rounded-xl bg-supagreen-dark p-10"}"><p class="${"font-inter mt-2 text-4xl font-bold text-center"}">Public Governance Coming Soon
-      </p></div></section>`;
-});
-var section4 = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Section4
-});
-const Subsection = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<div class="${"w-full h-44 bg-supagreen-dark grid text-supadark grid-cols-12"}"><div class="${"col-span-4 text-center my-auto"}"><p class="${"text-2xl font-bold"}">Funded Projects</p>
-        <p>0</p></div>
-    <div class="${"col-span-4 text-center my-auto"}"><p class="${"text-2xl font-bold"}">Total Funding Value</p>
-        <p>0</p></div>
-    <div class="${"col-span-4 text-center my-auto"}"><p class="${"text-2xl font-bold"}">Treasury Value</p>
-        <p>0</p></div></div>`;
-});
-var subsection = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Subsection
-});
-const Routes = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `
-<div><section style="${"background: url('https://ik.imagekit.io/1irdz9lsyrw/plutusrender__3wykITPm.png?updatedAt=1638359431895');"}" class="${"section text-gray-300 min-h-screen "}"><div class="${"container flex flex-col items-center px-5 py-16 mx-auto md:flex-row lg:px-28"}"><div class="${"flex flex-col mt-20 items-start w-full pt-0 mb-16 text-left lg:flex-grow md:w-1/2 xl:mr-20 md:pr-24 md:mb-0 "}"><h1 class="${"mb-8 font-commorant text-2xl font-bold text-left text-gray-50 lg:text-4xl"}">Crowdfunding Opportunity for Everyone
-        </h1>
-        <p class="${"mb-8 text-base font-inter leading-relaxed text-left "}">Leverage the power and security of blockchain technology to provide a
-          safe and innovative crowdfunding system without the need of
-          third-party intermediaries.
-        </p>
-
-        <div class="${"items-start"}">${validate_component(Sbutton, "Sbutton").$$render($$result, {}, {}, { default: () => `Become a Hero` })}</div></div>
-      <div class="${"w-full lg:w-5/6 lg:max-w-xl md:w-1/2 static"}"></div></div></section></div>
-${validate_component(Subsection, "Subsection").$$render($$result, {}, {}, {})}
-${validate_component(Section1, "Section1").$$render($$result, {}, {}, {})}
-${validate_component(Section2, "Section2").$$render($$result, {}, {}, {})}
-${validate_component(Section3, "Section3").$$render($$result, {}, {}, {})}
-${validate_component(Section4, "Section4").$$render($$result, {}, {}, {})}`;
-});
-var index$1 = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Routes
-});
-const Protocol = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<section><div class="${"container px-6 py-16 mx-auto text-center"}"><div class="${"max-w-lg mx-auto"}"><h1 class="${"text-3xl font-bold text-white dark:text-white md:text-4xl"}">Grow the Ecosystem</h1>
-                <p class="${"mt-6 text-gray-400 dark:text-gray-300"}">Join together hand-to-hand to build a better system for the people. Grow the superhero community to help others in need.</p>
-                <div class="${"max-w-sm mt-4 mx-auto"}">${validate_component(Sbutton, "Sbutton").$$render($$result, {}, {}, { default: () => `Get started` })}</div>
-                <p class="${"mt-3 text-sm text-gray-400 "}">Open source protocol</p></div>
-    
-            </div></section>`;
-});
-var index = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  [Symbol.toStringTag]: "Module",
-  "default": Protocol
 });
 export { init, render };
