@@ -4,9 +4,7 @@
   import Sbutton from "@comp/sbutton.svelte";
   import Section1 from "./section1.svelte";
   import Section2 from "./section2.svelte";
-  import Section3 from "./section3.svelte";
   import Section4 from "./section4.svelte";
-  import Subsection from "./subsection.svelte";
   import { Fullpage, FullpageSection, FullpageSlide } from "svelte-fullpage";
 
   //Optional, include all titles of your sections, this is also used as number that indicate count of sections

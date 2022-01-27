@@ -1,9 +1,3 @@
-<script>
-  import { goto } from "$app/navigation";
-
-  import Sbutton from "@comp/sbutton.svelte";
-</script>
-
 <section class="section bg-green-900">
   <div
     
