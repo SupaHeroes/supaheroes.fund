@@ -109,7 +109,7 @@
        >
          <li>
            <a
-             href="https://docs-supaheroes.netlify.app/"
+             href="https://docs.supaheroes.fund/"
              class="px-4 py-1 mr-1  transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-supagreen-dark "
              >Learn</a
            >
@@ -134,7 +134,7 @@
      <div class="col-span-2 w-48 p-4 text-supadark-black flex">
        <Sbutton
          on:click={async () =>
-           await goto("https://app-supaheroes.netlify.app/")}
+           await goto("https://app.supaheroes.fund/")}
          >Launch App</Sbutton
        >
      </div>
